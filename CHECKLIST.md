@@ -33,20 +33,20 @@ Stack:
 ### Database
 - [v] Install PostgreSQL locally
 - [v] Create database
-- [ ] Setup pg connection (db.js)
-- [ ] Test DB connection
+- [v] Setup pg connection (db.js)
+- [v] Test DB connection
 
 ---
 
 ## 🟢 PHASE 2 – User Authentication (JWT)
 
 ### User Model
-- [ ] Create user table (id, email, password, created_at)
+- [v] Create user table (id, email, password, created_at)
 
 ### Register
-- [ ] POST /auth/register
-- [ ] Hash password with bcrypt
-- [ ] Save user to DB
+- [v] POST /auth/register
+- [v] Hash password with bcrypt
+- [v] Save user to DB
 
 ### Login
 - [ ] POST /auth/login

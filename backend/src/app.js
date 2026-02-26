@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import testRoutes from './routes/test.routes.js';
+import productsRoutes from './routes/products.routes.js';
+import authRoutes from './routes/auth.routes.js';
+
 
 const app = express();
 
@@ -11,6 +14,8 @@ app.use(morgan("dev"));
 
 // Testing route
 app.use("/test", testRoutes);
+app.use("/products", productsRoutes);
+app.use("/auth", authRoutes);
 
 // Testing normal
 app.get("/", (req, res) => {
