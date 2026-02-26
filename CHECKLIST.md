@@ -16,19 +16,19 @@ Stack:
 - [v] Create CHECKLIST.md
 - [v] Create TASK.md
 - [v] Install backend dependencies
-- [ ] Setup .env file
-- [ ] First commit: "Initial project structure"
+- [v] Setup .env file
+- [v] First commit: "Initial project structure"
 
 ---
 
 ## 🟢 PHASE 1 – Backend Base Setup
 
 ### Server & Config
-- [ ] Setup Express server (app.js, server.js)
-- [ ] Setup CORS
-- [ ] Setup dotenv
-- [ ] Setup Morgan logger
-- [ ] Test server runs (GET / returns OK)
+- [v] Setup Express server (app.js, server.js)
+- [v] Setup CORS
+- [v] Setup dotenv
+- [v] Setup Morgan logger
+- [v] Test server runs (GET / returns OK)
 
 ### Database
 - [ ] Install PostgreSQL locally
