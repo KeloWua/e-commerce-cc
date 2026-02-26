@@ -31,8 +31,8 @@ Stack:
 - [v] Test server runs (GET / returns OK)
 
 ### Database
-- [ ] Install PostgreSQL locally
-- [ ] Create database
+- [v] Install PostgreSQL locally
+- [v] Create database
 - [ ] Setup pg connection (db.js)
 - [ ] Test DB connection
 
