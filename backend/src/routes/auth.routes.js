@@ -1,10 +1,36 @@
 import express from 'express';
 import pool from '../config/db.js';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { generateToken } from '../utils/jwt.js';
 import asyncHandler from '../middleware/asyncHandler.js';
+import passport from '../config/passport.js';
+
 
 const router = express.Router();
+
+// Google Auth 
+
+router.get('/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+router.get('/google/callback',
+    passport.authenticate('google', { session: false, failureRedirect: '/auth/google/failure' }),
+    (req, res) => {
+        res.json({
+            ok: true,
+            token: req.user.token,
+            user: req.user.user
+        });
+    }
+);
+
+router.get("/google/failure", (req, res) => {
+  res.status(401).json({ ok: false, message: "Google authentication failed" });
+});
+
+
+// Register
 
 router.post("/register", asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
@@ -27,6 +53,9 @@ router.post("/register", asyncHandler(async (req, res) => {
     res.status(201).json({ ok: true, user: rows[0] });
 }));
 
+
+//Login
+
 router.post("/login", asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -44,7 +73,7 @@ router.post("/login", asyncHandler(async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(401).json({ ok: false, message: "Incorrect password" });
 
-    const token = jwt.sign({ id: user.id, name: user.name, email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = generateToken({ id: user.id, name: user.name, email });
 
     res.status(200).json({ ok: true, token, user: { id: user.id, name: user.name, email } });
 }));
