@@ -61,23 +61,23 @@ Stack:
 
 ## 🟢 PHASE 3 – OAuth (Google Login)
 
-- [ ] Setup Passport
-- [ ] Setup Google OAuth credentials
-- [ ] Create /auth/google route
-- [ ] Handle Google callback
-- [ ] Create or find user in DB
-- [ ] Generate JWT after Google login
+- [v] Setup Passport
+- [v] Setup Google OAuth credentials
+- [v] Create /auth/google route
+- [v] Handle Google callback
+- [v] Create or find user in DB
+- [v] Generate JWT after Google login
 
 ---
 
 ## 🟢 PHASE 4 – Products
 
 ### Product Model
-- [ ] Create products table
-- [ ] Fields: id, name, description, price, image_url, stock
+- [v] Create products table
+- [v] Fields: id, name, description, price, image_url, stock
 
 ### API
-- [ ] GET /products
+- [v] GET /products
 - [ ] GET /products/:id
 - [ ] POST /products (admin only)
 

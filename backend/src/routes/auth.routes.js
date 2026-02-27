@@ -23,7 +23,8 @@ router.get('/google/callback',
             user: {
                 id: req.user.user.id,
                 name: req.user.user.name,
-                email: req.user.user.email
+                email: req.user.user.email,
+                role: req.user.user.role
             }
         });
     }
@@ -51,7 +52,7 @@ router.post("/register", asyncHandler(async (req, res) => {
     const { rows } = await pool.query(`
         INSERT INTO users (name, email, password)
         VALUES ($1, $2, $3)
-        RETURNING id, name, email
+        RETURNING id, name, email, role
     `, [name, email, hashedPassword]);
 
     res.status(201).json({ ok: true, user: rows[0] });
@@ -67,7 +68,7 @@ router.post("/login", asyncHandler(async (req, res) => {
     }
 
     const { rows } = await pool.query(
-        'SELECT id, name, password FROM users WHERE email = $1',
+        'SELECT id, name, password, role FROM users WHERE email = $1',
         [email]
     );
 
@@ -77,9 +78,9 @@ router.post("/login", asyncHandler(async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(401).json({ ok: false, message: "Incorrect password" });
 
-    const token = generateToken({ id: user.id, name: user.name, email });
+    const token = generateToken({ id: user.id, name: user.name, email, role: user.role });
 
-    res.status(200).json({ ok: true, token, user: { id: user.id, name: user.name, email } });
+    res.status(200).json({ ok: true, token, user: { id: user.id, name: user.name, email, role: user.role } });
 }));
 
 export default router;

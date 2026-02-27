@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-export default function authMiddleware(req, res, next) {
+export function authMiddleware(req, res, next) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -11,9 +11,21 @@ export default function authMiddleware(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded; // attach user info to request
+        req.user = decoded; 
         next();
     } catch (error) {
         return res.status(401).json({ ok: false, message: 'Invalid or expired token' });
     }
 }
+
+export const requireRole = (role) => {
+    return (req, res, next) => {
+    if (req.user.role !== role) {
+        return res.status(403).json({
+            ok: false,
+            message: "Forbidden"
+        });
+    }
+    next();
+    };
+};
