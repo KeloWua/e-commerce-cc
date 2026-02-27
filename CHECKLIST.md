@@ -55,7 +55,7 @@ Stack:
 
 ### Middleware
 - [v] Create auth middleware
-- [ ] Protect private routes
+- [v] Protect private routes
 
 ---
 
