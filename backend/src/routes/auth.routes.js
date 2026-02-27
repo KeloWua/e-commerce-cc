@@ -20,7 +20,11 @@ router.get('/google/callback',
         res.json({
             ok: true,
             token: req.user.token,
-            user: req.user.user
+            user: {
+                id: req.user.user.id,
+                name: req.user.user.name,
+                email: req.user.user.email
+            }
         });
     }
 );
