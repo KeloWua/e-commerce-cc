@@ -78,8 +78,8 @@ Stack:
 
 ### API
 - [v] GET /products
-- [ ] GET /products/:id
-- [ ] POST /products (admin only)
+- [v] GET /products/:id
+- [v] POST /products (admin only)
 
 ---
 

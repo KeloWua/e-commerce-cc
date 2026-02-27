@@ -15,6 +15,21 @@ router.get("/", asyncHandler(async (req, res) => {
         });
 }));
 
+
+router.get("/:id", asyncHandler(async (req, res) => {
+        const { id } = req.params;
+        const { rows } = await pool.query(`SELECT * FROM products WHERE id = $1`, [id])
+        if (!rows.length > 0) {
+            return res.status(404).json({
+                ok: false, message: "Product not found"
+            })
+        }
+        res.json({
+            ok: true,
+            products: rows[0]
+        });
+}));
+
 router.post("/", authMiddleware, requireRole("admin"), asyncHandler(async (req, res) => {
         const { name, description, price, imageUrl } = req.body;
         if (!name || !price) {
