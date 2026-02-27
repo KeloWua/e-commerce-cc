@@ -49,12 +49,12 @@ Stack:
 - [v] Save user to DB
 
 ### Login
-- [ ] POST /auth/login
-- [ ] Compare password
-- [ ] Generate JWT token
+- [v] POST /auth/login
+- [v] Compare password
+- [v] Generate JWT token
 
 ### Middleware
-- [ ] Create auth middleware
+- [v] Create auth middleware
 - [ ] Protect private routes
 
 ---
