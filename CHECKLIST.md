@@ -86,16 +86,16 @@ Stack:
 ## 🟢 PHASE 5 – Cart & Orders
 
 ### Orders Table
-- [ ] Create orders table
-- [ ] user_id
-- [ ] total_price
-- [ ] status
-- [ ] created_at
+- [v] Create orders table
+- [v] user_id
+- [v] total_price
+- [v] status
+- [v] created_at
 
 ### Order Items Table
-- [ ] order_id
-- [ ] product_id
-- [ ] quantity
+- [v] order_id
+- [v] product_id
+- [v] quantity
 
 ### API
 - [ ] POST /orders

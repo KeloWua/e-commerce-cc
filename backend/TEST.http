@@ -6,9 +6,9 @@ POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-    "name": "Mikhail",
-    "email": "test23@test.com",
-    "password": "123456"
+    "name": "Miguelito",
+    "email": "admin@admin.com",
+    "password": "admin"
 }
 
 
@@ -35,4 +35,29 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsIm5hbWUiO
     "price": 10,
     "imageUrl": ""
 
+}
+
+
+
+###
+POST http://localhost:3000/orders/
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "total": 0
+}
+
+
+###
+GET http://localhost:3000/orders/2
+
+
+###
+POST http://localhost:3000/orders/2/items
+Content-Type: application/json
+
+{
+    "productId": 2,
+    "quantity": 4
 }

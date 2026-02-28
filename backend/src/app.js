@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import testRoutes from './routes/test.routes.js';
 import productsRoutes from './routes/products.routes.js';
+import ordersRoutes from './routes/orders.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import errorHandler from './middleware/error.middleware.js'
 import passport from "./config/passport.js";
@@ -19,6 +20,7 @@ app.use(passport.initialize());
 app.use("/test", testRoutes);
 app.use("/products", productsRoutes);
 app.use("/auth", authRoutes);
+app.use("/orders", ordersRoutes);
 
 app.use(errorHandler)
 
