@@ -1,6 +1,7 @@
 import express from 'express';
 import pool from '../config/db.js';
 import asyncHandler from '../middleware/asyncHandler.js';
+import { authMiddleware } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
@@ -36,42 +37,150 @@ router.post('/', asyncHandler(async (req, res) => {
     });
 }));
 
-router.post('/:orderId/items', asyncHandler(async (req, res) => {
-  const { orderId } = req.params;
+router.post('/items', authMiddleware, asyncHandler(async (req, res) => {
+  const userId = req.user.id;
   const { productId, quantity } = req.body;
 
-  await pool.query('BEGIN');
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    
+    let { rows } = await client.query(
+      `SELECT id FROM orders 
+       WHERE user_id = $1 AND status = 'pending'
+       LIMIT 1`,
+      [userId]
+    );
+
+    let orderId;
+
+    if (rows.length === 0) {
+      
+      const newOrder = await client.query(
+        `INSERT INTO orders (user_id, total, status)
+         VALUES ($1, 0, 'pending')
+         RETURNING id`,
+        [userId]
+      );
+      orderId = newOrder.rows[0].id;
+    } else {
+      orderId = rows[0].id;
+    }
+
+    
+    const product = await client.query(
+      `SELECT price FROM products WHERE id = $1`,
+      [productId]
+    );
+
+    if (product.rows.length === 0) {
+      throw new Error('Product not found');
+    }
+
+    const price = product.rows[0].price;
 
 
-  const { rows } = await pool.query(
-    'SELECT price FROM products WHERE id = $1',
-    [productId]
-  );
+    await client.query(
+      `
+      INSERT INTO order_items (order_id, product_id, quantity, price)
+      VALUES ($1,$2,$3,$4)
+      ON CONFLICT (order_id, product_id)
+      DO UPDATE SET quantity = order_items.quantity + EXCLUDED.quantity
+      `,
+      [orderId, productId, quantity, price]
+    );
+    
 
-  const price = rows[0].price;
+    const totalResult = await client.query(
+      `SELECT SUM(quantity * price) AS total
+       FROM order_items WHERE order_id = $1`,
+      [orderId]
+    );
 
-  // insert item
-  await pool.query(
-    `INSERT INTO order_items (order_id, product_id, quantity, price)
-     VALUES ($1,$2,$3,$4)`,
-    [orderId, productId, quantity, price]
-  );
+    await client.query(
+      `UPDATE orders SET total = $1 WHERE id = $2`,
+      [totalResult.rows[0].total, orderId]
+    );
 
-  // recalc total
-  const { rows: totalRows } = await pool.query(
-    `SELECT SUM(quantity * price) AS total
-     FROM order_items WHERE order_id = $1`,
-    [orderId]
-  );
+    await client.query('COMMIT');
 
-  await pool.query(
-    `UPDATE orders SET total = $1 WHERE id = $2`,
-    [totalRows[0].total, orderId]
-  );
+    res.json({ ok: true, orderId });
 
-  await pool.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}));
 
-  res.json({ ok: true });
+
+router.patch('/items/:productId', authMiddleware, asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  const { productId } = req.params;
+  const { quantity } = req.body;
+
+  if (quantity < 0) {
+    return res.status(400).json({ message: "Invalid quantity" });
+  }
+
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const { rows } = await client.query(
+      `SELECT id FROM orders 
+       WHERE user_id = $1 AND status = 'pending'
+       LIMIT 1`,
+      [userId]
+    );
+
+    if (rows.length === 0) {
+      throw new Error("No active order");
+    }
+
+    const orderId = rows[0].id;
+
+    if (quantity === 0) {
+      await client.query(
+        `DELETE FROM order_items 
+         WHERE order_id = $1 AND product_id = $2`,
+        [orderId, productId]
+      );
+    } else {
+      await client.query(
+        `UPDATE order_items
+         SET quantity = $1
+         WHERE order_id = $2 AND product_id = $3`,
+        [quantity, orderId, productId]
+      );
+    }
+
+    // recalcular total
+    const totalResult = await client.query(
+      `SELECT COALESCE(SUM(quantity * price), 0) AS total
+       FROM order_items WHERE order_id = $1`,
+      [orderId]
+    );
+
+    await client.query(
+      `UPDATE orders SET total = $1 WHERE id = $2`,
+      [totalResult.rows[0].total, orderId]
+    );
+
+    await client.query('COMMIT');
+
+    res.json({ ok: true });
+
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
 }));
 
 export default router;

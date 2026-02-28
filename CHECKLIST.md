@@ -98,9 +98,9 @@ Stack:
 - [v] quantity
 
 ### API
-- [ ] POST /orders
-- [ ] GET /orders (user only)
-- [ ] GET /orders/:id
+- [v] POST /orders
+- [v] GET /orders (user only)
+- [v] GET /orders/:id
 
 ---
 

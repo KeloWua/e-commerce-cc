@@ -1,5 +1,5 @@
 ###
-GET http://localhost:3000/products/2
+GET http://localhost:3000/products/
 
 ###
 POST http://localhost:3000/auth/register
@@ -50,14 +50,25 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:3000/orders/2
+GET http://localhost:3000/orders/1
 
 
 ###
-POST http://localhost:3000/orders/2/items
+POST http://localhost:3000/orders/items
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0OEB0ZXN0LmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzcyMzE3MDMyLCJleHAiOjE3NzI0MDM0MzJ9.9iUENTpWwGs-o5nUqSFg7NqGO8GijjhvZ67_vGM9E3Y
 
 {
-    "productId": 2,
+    "productId": 3,
     "quantity": 4
+}
+
+
+###
+PATCH http://localhost:3000/orders/items/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0OEB0ZXN0LmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzcyMzE3MDMyLCJleHAiOjE3NzI0MDM0MzJ9.9iUENTpWwGs-o5nUqSFg7NqGO8GijjhvZ67_vGM9E3Y
+
+{
+    "quantity": 12
 }
