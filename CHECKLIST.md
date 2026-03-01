@@ -118,13 +118,13 @@ Stack:
 ## 🟢 PHASE 7 – Frontend Setup (React Template)
 
 ### Pages
-- [ ] Home
-- [ ] Login
-- [ ] Register
-- [ ] Products
-- [ ] Cart
-- [ ] Checkout
-- [ ] Orders
+- [v] Home
+- [v] Login
+- [v] Register
+- [v] Products
+- [v] Cart
+- [v] Checkout
+- [v] Orders
 
 ### Context
 - [ ] AuthContext

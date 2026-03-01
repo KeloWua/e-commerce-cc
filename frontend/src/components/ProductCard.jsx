@@ -1,16 +1,36 @@
-import React, { useContext } from 'react';
-import { CartContext } from '../context/CartContext';
+import { ShoppingBag, Star, Heart } from 'lucide-react';
 
-const ProductCard = ({ product }) => {
-  const { addToCart } = useContext(CartContext);
-
-  return (
-    <div className="product-card">
-      <h3>{product.name}</h3>
-      <p>${product.price}</p>
-      <button onClick={() => addToCart(product)}>Add to Cart</button>
-    </div>
-  );
+const ProductCard = ({ name, price, category, image }) => {
+    return (
+        <div className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-gray-100 p-2">
+            <div className="relative aspect-[4/5] bg-gray-100 rounded-xl overflow-hidden">
+                {/* Placeholder for Product Image */}
+                <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-medium">
+                    {name}
+                </div>
+                <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-gray-400 hover:text-pink-500 transition-colors shadow-sm">
+                    <Heart className="h-4 w-4" />
+                </button>
+                <div className="absolute inset-x-2 bottom-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <button className="w-full py-3 bg-gray-900 text-white font-bold rounded-lg flex items-center justify-center space-x-2 shadow-lg">
+                        <ShoppingBag className="h-4 w-4" />
+                        <span className="text-xs">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <div className="p-4">
+                <div className="flex justify-between items-start mb-1">
+                    <span className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">{category}</span>
+                    <div className="flex items-center text-yellow-400">
+                        <Star className="h-3 w-3 fill-current" />
+                        <span className="text-[10px] ml-1 text-gray-500 font-medium">4.8</span>
+                    </div>
+                </div>
+                <h3 className="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors truncate">{name}</h3>
+                <p className="mt-1 text-lg font-black text-gray-900">${price}</p>
+            </div>
+        </div>
+    );
 };
 
 export default ProductCard;
