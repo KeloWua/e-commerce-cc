@@ -1,20 +1,54 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 const Register = () => {
+
+    const { register, user } = useContext(AuthContext);
+
+    const navigate = useNavigate();
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (user) {
+            navigate('/');
+        }
+    }, [user]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await register(name, email, password)
+            setName('');
+            setEmail('');
+            setPassword('');
+            navigate('/login');
+        } catch (error) {
+            setError('Sign up failed')
+        }
+    };
+
     return (
         <div className="min-h-[80vh] flex items-center justify-center px-4 bg-gray-50/50">
             <div className="max-w-md w-full glass p-8 rounded-3xl shadow-xl border border-white/40">
                 <div className="text-center mb-10">
                     <h2 className="text-3xl font-black text-gray-900">Create Account</h2>
                     <p className="text-gray-500 mt-2 text-sm">Join the curated fashion community</p>
+                    {error && <p className="text-red-500 mt-2">{error}</p>}
                 </div>
 
-                <form className="space-y-5">
+                <form className="space-y-5" onSubmit={handleSubmit}>
                     <div className="relative group">
                         <User className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-indigo-600 transition-colors" />
                         <input
                             type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             placeholder="Full Name"
                             className="w-full pl-12 pr-4 py-3.5 bg-white/50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all text-sm"
                         />
@@ -24,6 +58,8 @@ const Register = () => {
                         <Mail className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-indigo-600 transition-colors" />
                         <input
                             type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="Email Address"
                             className="w-full pl-12 pr-4 py-3.5 bg-white/50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all text-sm"
                         />
@@ -33,6 +69,8 @@ const Register = () => {
                         <Lock className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-indigo-600 transition-colors" />
                         <input
                             type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
                             className="w-full pl-12 pr-4 py-3.5 bg-white/50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all text-sm"
                         />

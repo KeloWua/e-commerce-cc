@@ -61,6 +61,7 @@ const Navbar = () => {
                             <User className="h-5 w-5" />
                             </Link>
                             </>}
+                            
                             <Link to="/cart" className="relative group">
                                 <ShoppingCart className="h-5 w-5 text-gray-600 group-hover:text-indigo-600 transition-colors" />
                                 <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ring-2 ring-white">2</span>

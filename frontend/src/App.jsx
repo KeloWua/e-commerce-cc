@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
+import Profile from './pages/Profile';
 
 function App() {
     return (
@@ -18,7 +19,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/logout" element={<Login />} />
-                    <Route path="/profile" element={<Home />} />
+                    <Route path="/profile" element={<Profile />} />
                     
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/checkout" element={<Checkout />} />
