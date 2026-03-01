@@ -5,6 +5,7 @@ import testRoutes from './routes/test.routes.js';
 import productsRoutes from './routes/products.routes.js';
 import ordersRoutes from './routes/orders.routes.js';
 import authRoutes from './routes/auth.routes.js';
+import paymentsRoutes from './routes/payments.routes.js';
 import errorHandler from './middleware/error.middleware.js'
 import passport from "./config/passport.js";
 
@@ -12,9 +13,10 @@ import passport from "./config/passport.js";
 const app = express();
 
 app.use(cors());
-app.use(express.json());
 app.use(morgan("dev"));
 app.use(passport.initialize());
+app.use("/payments", paymentsRoutes);
+app.use(express.json());
 
 // Testing route
 app.use("/test", testRoutes);

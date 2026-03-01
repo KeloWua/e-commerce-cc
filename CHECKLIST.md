@@ -106,12 +106,12 @@ Stack:
 
 ## 🟢 PHASE 6 – Stripe Payments
 
-- [ ] Create Stripe account
-- [ ] Setup Stripe secret key in .env
-- [ ] Create checkout session endpoint
-- [ ] Redirect frontend to Stripe checkout
-- [ ] Handle success and cancel URLs
-- [ ] Save order after successful payment
+- [v] Create Stripe account
+- [v] Setup Stripe secret key in .env
+- [v] Create checkout session endpoint
+- [v] Redirect frontend to Stripe checkout
+- [v] Handle success and cancel URLs
+- [v] Save order after successful payment
 
 ---
 

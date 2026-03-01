@@ -50,7 +50,7 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:3000/orders/1
+GET http://localhost:3000/orders/2
 
 
 ###
@@ -72,3 +72,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsIm5hbWUiO
 {
     "quantity": 12
 }
+
+
+
+###
+POST http://localhost:3000/payments/checkout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0OEB0ZXN0LmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzcyMzE3MDMyLCJleHAiOjE3NzI0MDM0MzJ9.9iUENTpWwGs-o5nUqSFg7NqGO8GijjhvZ67_vGM9E3Y
