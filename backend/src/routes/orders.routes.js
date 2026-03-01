@@ -23,30 +23,11 @@ router.get('/', authMiddleware, asyncHandler(async (req, res) => {
   })
 }));
 
-router.get('/:orderId', asyncHandler(async (req, res) => {
-  const { orderId } = req.params;
 
-  const { rows: order } = await pool.query(`
-        SELECT * FROM orders WHERE id = $1`, [orderId]);
-
-  const { rows: items } = await pool.query(`
-        SELECT oi.id, oi.product_id, p.image_url, p.name, oi.quantity, oi.price
-        FROM order_items oi
-        JOIN products p
-        ON oi.product_id = p.id
-        WHERE oi.order_id = $1
-        ORDER BY oi.id
-        `, [orderId]);
-
-  res.json({
-    order: order,
-    items: items
-  })
-}));
 
 router.get('/pending', authMiddleware, asyncHandler(async (req, res) => {
   const userId = req.user.id;
-
+  console.log(userId)
 
   const { rows } = await pool.query(
     `SELECT id, total FROM orders 
@@ -79,8 +60,27 @@ router.get('/pending', authMiddleware, asyncHandler(async (req, res) => {
 
 }));
 
+router.get('/:orderId', asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
 
+  const { rows: order } = await pool.query(`
+        SELECT * FROM orders WHERE id = $1`, [orderId]);
 
+  const { rows: items } = await pool.query(`
+        SELECT oi.id, oi.product_id, p.image_url, p.name, oi.quantity, oi.price
+        FROM order_items oi
+        JOIN products p
+        ON oi.product_id = p.id
+        WHERE oi.order_id = $1
+        ORDER BY oi.id
+        `, [orderId]);
+
+  res.json({
+    order: order,
+    items: items
+  })
+}));
+//test
 
 router.post('/', asyncHandler(async (req, res) => {
   const { userId, total } = req.body;
@@ -93,6 +93,7 @@ router.post('/', asyncHandler(async (req, res) => {
     orderId: rows[0].id
   });
 }));
+// finish test
 
 router.post('/items', authMiddleware, asyncHandler(async (req, res) => {
   const userId = req.user.id;

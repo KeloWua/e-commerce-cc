@@ -1,23 +1,25 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import api from "../services/api.js";
+import { OrderContext } from "./OrderContext.jsx";
 
-export const productsContext = createContext();
+export const ProductsContext = createContext();
 
-export const productsProvider = ({ children }) => {
+export const ProductsProvider = ({ children }) => {
+  const { loadOrder } = useContext(OrderContext);
   const [products, setproducts] = useState(null);
-
   const fetchPendingproducts = async () => {
     try {
-      const res = await api.get('/productss/pending')
-      setproducts(res.data);
+      const res = await api.get('/products')
+      setproducts(res.data.products);
     } catch (error) {
       setproducts(null)
     }   
   };
 
   const addItem = async (productId, quantity = 1) => {
-    await api.post('/productss/items', {productId, quantity});
+    await api.post('/orders/items', {productId, quantity});
     await fetchPendingproducts();
+    await loadOrder();
   };
 
   const clearproducts = () => {
@@ -25,13 +27,13 @@ export const productsProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    fetchPendingproducts
+    fetchPendingproducts()
   }, []);;
 
 
   return (
-    <productsContext.Provider value={{ products, addItem, fetchPendingproducts, clearproducts}}>
+    <ProductsContext.Provider value={{ products, addItem, fetchPendingproducts, clearproducts}}>
       {children}
-    </productsContext.Provider>
+    </ProductsContext.Provider>
   );
 };

@@ -2,11 +2,15 @@ import { ShoppingCart, User, LogOut, Menu, Search, X } from 'lucide-react';
 import { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { OrderContext } from '../context/OrderContext';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [userLoggedIn, setUserLoggedIn] = useState(false);
+
     const { user, logout } = useContext(AuthContext);
+    const { order } = useContext(OrderContext);
+    let cartCount = order?.items?.length
 
     useEffect(() => {
         if(user) {
@@ -64,7 +68,7 @@ const Navbar = () => {
                             
                             <Link to="/cart" className="relative group">
                                 <ShoppingCart className="h-5 w-5 text-gray-600 group-hover:text-indigo-600 transition-colors" />
-                                <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ring-2 ring-white">2</span>
+                                <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ring-2 ring-white">{cartCount || 0}</span>
                             </Link>
                         </div>
                     </div>

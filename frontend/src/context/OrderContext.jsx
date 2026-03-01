@@ -1,36 +1,71 @@
-import { createContext, useState, useEffect } from "react";
-import api from "../services/api.js";
+import { createContext, useState, useEffect, useContext } from "react";
+import {
+  fetchPendingOrder,
+  updateQtyProduct
+} from "../services/order.service";
+import { AuthContext } from "./AuthContext";
+
+
 
 export const OrderContext = createContext();
 
 export const OrderProvider = ({ children }) => {
+  // Global state
   const [order, setOrder] = useState(null);
-
-  const fetchPendingOrder = async () => {
+  const { user } = useContext(AuthContext);
+  // Load pending order from backend
+  const loadOrder = async () => {
     try {
-      const res = await api.get('/orders/pending')
-      setOrder(res.data);
+      const data = await fetchPendingOrder();
+
+      if (!data) {
+        setOrder(null);
+        return;
+      }
+
+      // Normalizing data to avoid issues with e.g(' .toFixed(2) '...)
+      const normalized = {
+        ...data,
+        items: data.items.map(item => ({
+          ...item,
+          price: Number(item.price),
+          quantity: Number(item.quantity)
+        }))
+      };
+
+      setOrder(normalized);
+
     } catch (error) {
-      setOrder(null)
-    }   
+      console.error("Error loading order:", error);
+      setOrder(null);
+    }
   };
 
-  const addItem = async (productId, quantity = 1) => {
-    await api.post('/orders/items', {productId, quantity});
-    await fetchPendingOrder();
+  // Update quantity
+  const updateItemQty = async (productId, quantity) => {
+    await updateQtyProduct(productId, quantity);
+
+    // IMPORTANT:
+    // After modifying backend, re-load updated order
+    await loadOrder();
   };
 
-  const clearOrder = () => {
-    setOrder(null);
-  }
-
+  // Executes when provider mounts or user logs in/out.
   useEffect(() => {
-    fetchPendingOrder
-  }, []);;
-
-
+    if (user) {
+      loadOrder();
+    } else {
+      setOrder(null);
+    }
+  }, [user]);
   return (
-    <OrderContext.Provider value={{ order, addItem, fetchPendingOrder, clearOrder}}>
+    <OrderContext.Provider
+      value={{
+        order,
+        loadOrder,
+        updateItemQty
+      }}
+    >
       {children}
     </OrderContext.Provider>
   );

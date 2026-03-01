@@ -1,9 +1,8 @@
 import api from "./api";
 
-export const fetchOrder = async () => {
+export const fetchPendingOrder = async () => {
     const data = await api.get('/orders/pending');
     if (!data) {return null}
-    console.log(data.data);
     return data.data;
 };
 
@@ -24,6 +23,12 @@ export const fetchUserOrders = async () => {
 export const fetchOrderById = async (orderId) => {
     const { data } = await api.get(`/orders/${orderId}`);
     if (!data) {return null}
-    console.log(data);
+    return data;
+};
+
+
+
+export const fetchAddProductToOrder = async (productId, quantity) => {
+    const data = await api.post('/orders/items', { productId, quantity });
     return data;
 };

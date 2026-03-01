@@ -1,7 +1,7 @@
 import { Package, ChevronRight, Clock } from 'lucide-react';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { fetchOrderById, fetchUserOrders } from '../services/order.service';
+import { fetchUserOrders } from '../services/order.service';
 import { useNavigate } from 'react-router-dom';
 
 const Orders = () => {
@@ -18,6 +18,7 @@ const Orders = () => {
             const userOrders = await fetchUserOrders();
             setOrders(userOrders)
         }
+        if(user)
         loadOrders();
     }, [])
 

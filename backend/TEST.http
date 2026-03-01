@@ -70,10 +70,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsIm5hbWUiO
 ###
 POST http://localhost:3000/orders/items
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0MjNAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIzODEyNTUsImV4cCI6MTc3MjQ2NzY1NX0.Qygdx6InjnTQ6dvbZEcG61G3O8FgVHi0-R--eUwM_Vw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0MjNAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIzOTczMzQsImV4cCI6MTc3MjQ4MzczNH0.dcuCqHUTgsgwiLo4-jYmT1SKPIAKYUT-Dtx8gmKLCSE
 
 {
-    "productId": 2,
+    "productId": 6,
     "quantity": 1
 }
 

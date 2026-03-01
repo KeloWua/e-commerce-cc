@@ -1,27 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ProductCard from '../components/ProductCard';
 import { Filter, ChevronDown } from 'lucide-react';
-import { fetchProducts } from '../services/product.service';
+import { ProductsContext } from '../context/ProductsProvider';
+
 
 const Products = () => {
     
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        const load = async () => {
-            const data = await fetchProducts();
-            setProducts(data)
-        }
-        load()
-    }, []);
+    const { products } = useContext(ProductsContext);
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900">Explore Collection</h1>
-                    {products.length?
-                    <p className="text-gray-500 mt-2">Showing all {products.length} items in the curated selection</p>
+                    {products?.length?
+                    <p className="text-gray-500 mt-2">Showing all {products?.length} items in the curated selection</p>
                     : <p className="text-gray-500 mt-2">No items found</p>
                 }
                 </div>
@@ -39,11 +32,11 @@ const Products = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                {products.map((product, i) => (
+                {products?.map((product, i) => (
                     <ProductCard key={i} {...product} />
                 ))}
                 {/* Repeating for visual richness */}
-                {products.map((product, i) => (
+                {products?.map((product, i) => (
                     <ProductCard key={`dup-${i}`} {...product} />
                 ))}
             </div>
