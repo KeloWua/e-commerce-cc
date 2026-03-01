@@ -18,7 +18,7 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "test8@test.com",
+    "email": "test23@test.com",
     "password": "123456"
 }
 
@@ -50,17 +50,19 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:3000/orders/2
+GET http://localhost:3000/orders/pending/
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0MjNAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIzNzE3NjQsImV4cCI6MTc3MjQ1ODE2NH0.JLKwKraZN7KDyUY4XRb-VPWJIffu5PFK56Hj6baqP7o
 
 
 ###
 POST http://localhost:3000/orders/items
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0OEB0ZXN0LmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzcyMzE3MDMyLCJleHAiOjE3NzI0MDM0MzJ9.9iUENTpWwGs-o5nUqSFg7NqGO8GijjhvZ67_vGM9E3Y
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0MjNAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIzNzE3NjQsImV4cCI6MTc3MjQ1ODE2NH0.JLKwKraZN7KDyUY4XRb-VPWJIffu5PFK56Hj6baqP7o
 
 {
-    "productId": 3,
-    "quantity": 4
+    "productId": 2,
+    "quantity": 1
 }
 
 

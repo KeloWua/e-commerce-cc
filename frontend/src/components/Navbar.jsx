@@ -1,9 +1,21 @@
-import { ShoppingCart, User, Menu, Search, X } from 'lucide-react';
-import { useState } from 'react';
+import { ShoppingCart, User, LogOut, Menu, Search, X } from 'lucide-react';
+import { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [userLoggedIn, setUserLoggedIn] = useState(false);
+    const { user, logout } = useContext(AuthContext);
+
+    useEffect(() => {
+        if(user) {
+            console.log('user contected');
+            setUserLoggedIn(true)
+        } else {
+        setUserLoggedIn(false)
+        }
+    },[user]);
 
     return (
         <nav className="sticky top-0 z-50 glass shadow-sm">
@@ -31,9 +43,24 @@ const Navbar = () => {
                         </div>
 
                         <div className="flex items-center space-x-4 border-l pl-8 border-gray-200">
-                            <Link to="/login" className="text-gray-600 hover:text-indigo-600 transition-colors">
-                                <User className="h-5 w-5" />
+
+                            {
+                            userLoggedIn? 
+                            <>
+                            <Link to="/profile" className="text-gray-600 hover:text-indigo-600 transition-colors">
+                            <User className="h-5 w-5" />
                             </Link>
+                            <Link to="/logout"
+                            onClick={() => logout()}
+                            className="text-gray-600 hover:text-indigo-600 transition-colors">
+                            <LogOut className="h-5 w-5" />
+                            </Link>
+                            </> :
+                            <>
+                            <Link to="/login" className="text-gray-600 hover:text-indigo-600 transition-colors">
+                            <User className="h-5 w-5" />
+                            </Link>
+                            </>}
                             <Link to="/cart" className="relative group">
                                 <ShoppingCart className="h-5 w-5 text-gray-600 group-hover:text-indigo-600 transition-colors" />
                                 <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ring-2 ring-white">2</span>

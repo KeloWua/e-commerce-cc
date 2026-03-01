@@ -5,36 +5,71 @@ import { authMiddleware } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
-router.get('/:orderId', asyncHandler(async (req, res) => {
-    const { orderId } = req.params;
+router.get('/pending', authMiddleware, asyncHandler(async (req, res) => {
+  const userId = req.user.id;
 
-    const { rows: order } = await pool.query(`
-        SELECT * FROM orders WHERE id = $1`, [orderId]);
+
+  const { rows } = await pool.query(
+    `SELECT id, total FROM orders 
+       WHERE user_id = $1 AND status = 'pending'
+       LIMIT 1`,
+    [userId]
+  );
+
+  if (rows.length === 0) {
+
+    return res.status(400).json({ message: 'No pending order' })
+
+  } 
+    const orderId = rows[0].id;
+    const total = rows[0].total;
 
     const { rows: items } = await pool.query(`
+        SELECT oi.id, oi.product_id, p.name, oi.quantity, oi.price
+        FROM order_items oi
+        JOIN products p ON oi.product_id = p.id
+        WHERE oi.order_id = $1
+        `, [orderId]);
+
+    res.json({ 
+      orderId,
+      total,
+      items
+     });
+  
+}));
+
+
+router.get('/:orderId', asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+
+  const { rows: order } = await pool.query(`
+        SELECT * FROM orders WHERE id = $1`, [orderId]);
+
+  const { rows: items } = await pool.query(`
         SELECT oi.id, oi.product_id, p.name, oi.quantity, oi.price
         FROM order_items oi
         JOIN products p
         ON oi.product_id = p.id
         WHERE oi.order_id = $1
         `, [orderId]);
-    
-    res.json({
-        order: order,
-        items: items
-    })
+
+  res.json({
+    order: order,
+    items: items
+  })
 }));
 
 router.post('/', asyncHandler(async (req, res) => {
-    const { userId, total } = req.body;
+  const { userId, total } = req.body;
 
-    const { rows } = await pool.query(`
+  const { rows } = await pool.query(`
         INSERT INTO orders (user_id, total) VALUES ($1, $2) returning *
         `, [userId, total]);
-    res.json({
-        ok: true,
-        orderId: rows[0].id
-    });
+  res.json({
+    ok: true,
+    orderId: rows[0].id
+  });
 }));
 
 router.post('/items', authMiddleware, asyncHandler(async (req, res) => {
@@ -46,7 +81,7 @@ router.post('/items', authMiddleware, asyncHandler(async (req, res) => {
   try {
     await client.query('BEGIN');
 
-    
+
     let { rows } = await client.query(
       `SELECT id FROM orders 
        WHERE user_id = $1 AND status = 'pending'
@@ -57,7 +92,7 @@ router.post('/items', authMiddleware, asyncHandler(async (req, res) => {
     let orderId;
 
     if (rows.length === 0) {
-      
+
       const newOrder = await client.query(
         `INSERT INTO orders (user_id, total, status)
          VALUES ($1, 0, 'pending')
@@ -69,7 +104,7 @@ router.post('/items', authMiddleware, asyncHandler(async (req, res) => {
       orderId = rows[0].id;
     }
 
-    
+
     const product = await client.query(
       `SELECT price FROM products WHERE id = $1`,
       [productId]
@@ -91,7 +126,7 @@ router.post('/items', authMiddleware, asyncHandler(async (req, res) => {
       `,
       [orderId, productId, quantity, price]
     );
-    
+
 
     const totalResult = await client.query(
       `SELECT SUM(quantity * price) AS total
