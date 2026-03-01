@@ -1,12 +1,12 @@
 import { ShoppingBag, Star, Heart } from 'lucide-react';
 
-const ProductCard = ({ name, price, category, image }) => {
+const ProductCard = ({ name, price, category, image_url: image }) => {
     return (
         <div className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-gray-100 p-2">
             <div className="relative aspect-[4/5] bg-gray-100 rounded-xl overflow-hidden">
                 {/* Placeholder for Product Image */}
                 <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-medium">
-                    {name}
+                    <img src={image} alt={name} />
                 </div>
                 <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-gray-400 hover:text-pink-500 transition-colors shadow-sm">
                     <Heart className="h-4 w-4" />
@@ -23,7 +23,7 @@ const ProductCard = ({ name, price, category, image }) => {
                     <span className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">{category}</span>
                     <div className="flex items-center text-yellow-400">
                         <Star className="h-3 w-3 fill-current" />
-                        <span className="text-[10px] ml-1 text-gray-500 font-medium">4.8</span>
+                        <span className="text-[10px] ml-1 text-gray-500 font-medium">0</span>
                     </div>
                 </div>
                 <h3 className="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors truncate">{name}</h3>

@@ -50,15 +50,27 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:3000/orders/pending/
+GET http://localhost:3000/orders/
 Content-Type: application/json
-Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0MjNAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIzNzE3NjQsImV4cCI6MTc3MjQ1ODE2NH0.JLKwKraZN7KDyUY4XRb-VPWJIffu5PFK56Hj6baqP7o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0MjNAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIzODEyNTUsImV4cCI6MTc3MjQ2NzY1NX0.Qygdx6InjnTQ6dvbZEcG61G3O8FgVHi0-R--eUwM_Vw
+
+### ANOTHA TESTING
+GET http://localhost:3000/orders/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0MjNAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIzODEyNTUsImV4cCI6MTc3MjQ2NzY1NX0.Qygdx6InjnTQ6dvbZEcG61G3O8FgVHi0-R--eUwM_Vw
+
+### TESTING 
+GET http://localhost:3000/orders/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0OEB0ZXN0LmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzcyMzg3MTI0LCJleHAiOjE3NzI0NzM1MjR9.US1ZNiwo9vvpX2epYyxTFIhFMxUOw7YjTUfOkz_IBAw
+
+
 
 
 ###
 POST http://localhost:3000/orders/items
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0MjNAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIzNzE3NjQsImV4cCI6MTc3MjQ1ODE2NH0.JLKwKraZN7KDyUY4XRb-VPWJIffu5PFK56Hj6baqP7o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsIm5hbWUiOiJNaWtoYWlsIiwiZW1haWwiOiJ0ZXN0MjNAdGVzdC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIzODEyNTUsImV4cCI6MTc3MjQ2NzY1NX0.Qygdx6InjnTQ6dvbZEcG61G3O8FgVHi0-R--eUwM_Vw
 
 {
     "productId": 2,

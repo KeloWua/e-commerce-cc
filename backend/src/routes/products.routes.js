@@ -5,7 +5,7 @@ import { authMiddleware, requireRole } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-// Testing Route
+
 
 router.get("/", asyncHandler(async (req, res) => {
         const { rows } = await pool.query(`SELECT * FROM products`)

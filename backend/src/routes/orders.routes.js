@@ -5,6 +5,45 @@ import { authMiddleware } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
+router.get('/', authMiddleware, asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+
+  const { rows } = await pool.query(
+    `SELECT id, user_id, total, status
+    FROM orders 
+    WHERE user_id = $1`,
+    [userId]
+  );
+
+  if (rows.length === 0) {
+    return res.json({ message: 'No orders' })
+  }
+  res.json({
+    orders: rows
+  })
+}));
+
+router.get('/:orderId', asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+
+  const { rows: order } = await pool.query(`
+        SELECT * FROM orders WHERE id = $1`, [orderId]);
+
+  const { rows: items } = await pool.query(`
+        SELECT oi.id, oi.product_id, p.image_url, p.name, oi.quantity, oi.price
+        FROM order_items oi
+        JOIN products p
+        ON oi.product_id = p.id
+        WHERE oi.order_id = $1
+        ORDER BY oi.id
+        `, [orderId]);
+
+  res.json({
+    order: order,
+    items: items
+  })
+}));
+
 router.get('/pending', authMiddleware, asyncHandler(async (req, res) => {
   const userId = req.user.id;
 
@@ -18,47 +57,30 @@ router.get('/pending', authMiddleware, asyncHandler(async (req, res) => {
 
   if (rows.length === 0) {
 
-    return res.status(400).json({ message: 'No pending order' })
+    return res.json({ message: 'No pending order' })
 
-  } 
-    const orderId = rows[0].id;
-    const total = rows[0].total;
+  }
+  const orderId = rows[0].id;
+  const total = rows[0].total;
 
-    const { rows: items } = await pool.query(`
-        SELECT oi.id, oi.product_id, p.name, oi.quantity, oi.price
+  const { rows: items } = await pool.query(`
+        SELECT oi.id, oi.product_id, p.name, p.image_url, oi.quantity, oi.price
         FROM order_items oi
         JOIN products p ON oi.product_id = p.id
         WHERE oi.order_id = $1
-        `, [orderId]);
-
-    res.json({ 
-      orderId,
-      total,
-      items
-     });
-  
-}));
-
-
-router.get('/:orderId', asyncHandler(async (req, res) => {
-  const { orderId } = req.params;
-
-  const { rows: order } = await pool.query(`
-        SELECT * FROM orders WHERE id = $1`, [orderId]);
-
-  const { rows: items } = await pool.query(`
-        SELECT oi.id, oi.product_id, p.name, oi.quantity, oi.price
-        FROM order_items oi
-        JOIN products p
-        ON oi.product_id = p.id
-        WHERE oi.order_id = $1
+        ORDER BY oi.id
         `, [orderId]);
 
   res.json({
-    order: order,
-    items: items
-  })
+    orderId,
+    total,
+    items
+  });
+
 }));
+
+
+
 
 router.post('/', asyncHandler(async (req, res) => {
   const { userId, total } = req.body;
@@ -217,5 +239,9 @@ router.patch('/items/:productId', authMiddleware, asyncHandler(async (req, res) 
     client.release();
   }
 }));
+
+
+
+
 
 export default router;
