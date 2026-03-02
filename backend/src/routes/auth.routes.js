@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/jwt.js';
 import asyncHandler from '../middleware/asyncHandler.js';
 import passport from '../config/passport.js';
+import { authMiddleware } from '../middleware/auth.middleware.js';
 
 
 const router = express.Router();
@@ -14,27 +15,31 @@ router.get('/google',
     passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-router.get('/google/callback',
-    passport.authenticate('google', { session: false, failureRedirect: '/auth/google/failure' }),
-    (req, res) => {
-        res.json({
-            ok: true,
-            token: req.user.token,
-            user: {
-                id: req.user.user.id,
-                name: req.user.user.name,
-                email: req.user.user.email,
-                role: req.user.user.role
-            }
-        });
-    }
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { session: false, failureRedirect: '/auth/google/failure' }),
+  (req, res) => {
+    const { token } = req.user;
+
+    
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== 'production', 
+      maxAge: 1000 * 60 * 60 * 24,
+    });
+
+
+    res.redirect('http://localhost:5173/home');
+  }
 );
 
 router.get("/google/failure", (req, res) => {
   res.status(401).json({ ok: false, message: "Google authentication failed" });
 });
 
-
+router.get('/me', authMiddleware, (req, res) => {
+  res.json({ user: req.user });
+});
 // Register
 
 router.post("/register", asyncHandler(async (req, res) => {
@@ -80,7 +85,24 @@ router.post("/login", asyncHandler(async (req, res) => {
 
     const token = generateToken({ id: user.id, name: user.name, email, role: user.role });
 
-    res.status(200).json({ ok: true, token, user: { id: user.id, name: user.name, email, role: user.role } });
+    res
+    .cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== 'production',
+        sameSite: 'none',
+        maxAge: 1000 * 60 * 60 * 24
+    })
+    .json({ ok: true, user: { id: user.id, name: user.name, email, role: user.role } });
 }));
+
+
+router.post('/logout', (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== 'production',
+    sameSite: 'none' // 
+  });
+  res.json({ ok: true, message: 'Logged out' });
+});
 
 export default router;

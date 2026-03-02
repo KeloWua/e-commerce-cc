@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, ArrowRight } from 'lucide-react';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { FcGoogle } from "react-icons/fc";
 
 const Register = () => {
 
@@ -85,7 +86,17 @@ const Register = () => {
                         <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                     </button>
                 </form>
-
+                <div className="flex flex-col items-center mt-6 bg-gray-100 p-8 rounded-lg">
+                    <p className="mb-4 text-gray-500 font-bold text-lg drop-shadow-md">
+                        Or sign up using:
+                    </p>
+                    <a href="http://localhost:3000/auth/google">
+                        <button className="flex items-center justify-center w-52 py-3 bg-gray-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl">
+                            <FcGoogle className="h-6 w-6 mr-2 drop-shadow-lg" />
+                            Google
+                        </button>
+                    </a>
+                </div>
                 <div className="mt-8 text-center">
                     <p className="text-gray-500 text-sm">
                         Already have an account? {' '}

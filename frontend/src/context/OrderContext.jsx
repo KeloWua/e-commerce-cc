@@ -1,7 +1,8 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import {
   fetchPendingOrder,
-  updateQtyProduct
+  updateQtyProduct,
+  stripePayment
 } from "../services/order.service";
 import { AuthContext } from "./AuthContext";
 
@@ -58,12 +59,20 @@ export const OrderProvider = ({ children }) => {
       setOrder(null);
     }
   }, [user]);
+
+
+  const stripePaymentCheckout = async () => {
+    const stripeUrl = await stripePayment(); 
+    return stripeUrl; //returns link to checkout with order
+  };
+
   return (
     <OrderContext.Provider
       value={{
         order,
         loadOrder,
-        updateItemQty
+        updateItemQty,
+        stripePaymentCheckout
       }}
     >
       {children}

@@ -1,47 +1,56 @@
 import { createContext, useState, useEffect } from "react";
-import { login as loginService,
-  register as registerService
- } from "../services/auth.service.js";
-import { setAuthToken } from "../services/api.js";
+import {
+  login as loginService,
+  register as registerService,
+  logout as logoutService,
+  fetchMe
+} from "../services/auth.service.js";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
 
+  // When App loads, try to get user from cookies
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setToken(storedToken);
-      setAuthToken(storedToken);
-    }
-  }, []);;
+    const loadUser = async () => {
+      try {
+        // We first try to get user from backend (/auth/me)
+        const { user: me } = await fetchMe();
+        setUser(me);
+        localStorage.setItem('user', JSON.stringify(me));
+      } catch {
+        // If unsuccesful, we try fallback to localStorage (normal login /"not google")
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) setUser(JSON.parse(storedUser));
+      }
+    };
+    loadUser();
+  }, []);
 
+  // Normal Login
   const login = async (email, password) => {
-    const { token, user } = await loginService(email, password);
-
-    setToken(token);
+    const { user } = await loginService(email, password);
     setUser(user);
-
-    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
   };
 
+  // Normal Sign Up
   const register = async (name, email, password) => {
     const res = await registerService(name, email, password);
-
-    console.log(res)
+    console.log(res);
+    // Here we could make the user already log in after succesfull sign up, but we want them to re-use the password for verification in case they forget.
   };
 
-  const logout = () => {
+  // Logout
+  const logout = async () => {
+    await logoutService(); // backend clears cookie
     setUser(null);
-    setToken(null);
-    localStorage.removeItem('token');
-    setAuthToken(null);
+    localStorage.removeItem('user');
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, register }}>
+    <AuthContext.Provider value={{ user, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );

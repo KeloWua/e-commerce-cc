@@ -127,14 +127,14 @@ Stack:
 - [v] Orders
 
 ### Context
-- [ ] AuthContext
-- [ ] CartContext
+- [v] AuthContext
+- [v] OrderContext
 
 ### Services
-- [ ] API service (axios/fetch)
-- [ ] Auth service
-- [ ] Product service
-- [ ] Order service
+- [v] API service (axios/fetch)
+- [v] Auth service
+- [v] Product service
+- [v] Order service
 
 ---
 

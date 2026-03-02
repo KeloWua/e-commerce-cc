@@ -7,4 +7,14 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432
 })
+
+pool.connect()
+  .then(client => {
+    console.log("✅ DB CONNECTED");
+    client.release();
+  })
+  .catch(err => {
+    console.error("❌ DB CONNECTION ERROR:", err);
+  });
+
 export default pool;

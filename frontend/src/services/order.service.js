@@ -32,3 +32,9 @@ export const fetchAddProductToOrder = async (productId, quantity) => {
     const data = await api.post('/orders/items', { productId, quantity });
     return data;
 };
+
+
+export const stripePayment = async () => {
+    const { data } = await api.post('/payments/checkout');
+    return data.url
+}

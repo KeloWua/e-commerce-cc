@@ -1,11 +1,10 @@
-import api, { setAuthToken } from './api'; // axios
+import api from './api'; // axios
 
 export const login = async (email, password) => {
   const res = await api.post('/auth/login', { email, password });
-  const { token, user } = res.data;
-  setAuthToken(token);
+  const { user } = res.data;
 
-  return { token, user };
+  return { user };
 };
 
 export const register = async (name, email, password) => {
@@ -13,3 +12,12 @@ export const register = async (name, email, password) => {
   return res.data;
 };
 
+
+export const logout = async () => {
+  await api.post('/auth/logout');
+};
+
+export const fetchMe = async () => {
+  const res = await api.get('/auth/me'); // backend returns user from cookie
+  return { user: res.data.user };
+};

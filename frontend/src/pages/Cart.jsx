@@ -1,13 +1,13 @@
 import { Trash2, Plus, Minus, CreditCard } from 'lucide-react';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, redirect } from 'react-router-dom';
 import { OrderContext } from '../context/OrderContext';
 
 const Cart = () => {
 
 
-  const { order, updateItemQty } = useContext(OrderContext);
- 
+  const { order, updateItemQty, stripePaymentCheckout } = useContext(OrderContext);
+
 
   if (!order || order.items.length === 0) {
     return (
@@ -26,11 +26,22 @@ const Cart = () => {
     await updateItemQty(productId, newQty);
   };
 
- 
+
   const handleDelete = async (productId) => {
     await updateItemQty(productId, 0);
   };
 
+  const handleCheckOut = async () => {
+    try {
+      const url = await stripePaymentCheckout(); // get Stripe URL
+      if (url) {
+        // Redirect to Stripe checkout
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error("Error loading checkout:", error);
+    }
+  };
   return (
     <div className="max-w-7xl mx-auto px-4 py-16">
 
@@ -45,13 +56,13 @@ const Cart = () => {
 
           {order.items.map((item) => (
 
-            <div 
+            <div
               key={item.id}
               className="flex items-center gap-6 p-6 bg-white rounded-3xl border shadow-sm"
             >
 
-              <img 
-                src={item.image_url} 
+              <img
+                src={item.image_url}
                 alt={item.name}
                 className="w-24 h-24 rounded-xl"
               />
@@ -70,7 +81,7 @@ const Cart = () => {
                 </div>
 
                 <p className="text-sm font-bold">
-                  ${item.price.toFixed(2)} | 
+                  ${item.price.toFixed(2)} |
                   <span className="text-gray-500 ml-2">
                     Subtotal: ${(item.price * item.quantity).toFixed(2)}
                   </span>
@@ -122,8 +133,17 @@ const Cart = () => {
               </span>
             </div>
 
-            <Link 
-              to="/checkout" 
+            <button
+
+              onClick={handleCheckOut}
+              className="w-full py-5 mt-8 bg-black text-gray-100 font-bold rounded-2xl flex justify-center"
+            >
+              Proceed to Checkout
+              <CreditCard className="ml-3 h-5 w-5" />
+            </button>
+
+            <Link
+              to="/checkout"
               className="w-full py-5 mt-8 bg-white text-gray-900 font-bold rounded-2xl flex justify-center"
             >
               Proceed to Checkout

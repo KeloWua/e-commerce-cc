@@ -8,18 +8,21 @@ import authRoutes from './routes/auth.routes.js';
 import paymentsRoutes from './routes/payments.routes.js';
 import errorHandler from './middleware/error.middleware.js'
 import passport from "./config/passport.js";
-
+import cookieParser from 'cookie-parser';
 
 const app = express();
-
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+}));
 app.use(morgan("dev"));
 app.use(passport.initialize());
 app.use("/payments", paymentsRoutes);
 app.use(express.json());
 
-// Testing route
 app.use("/test", testRoutes);
+
 app.use("/products", productsRoutes);
 app.use("/auth", authRoutes);
 app.use("/orders", ordersRoutes);
