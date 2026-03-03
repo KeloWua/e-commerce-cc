@@ -140,31 +140,31 @@ Stack:
 
 ## 🟢 PHASE 8 – Frontend Features
 
-- [ ] User registration form
-- [ ] User login form
-- [ ] Google login button
-- [ ] Product list
-- [ ] Add to cart
-- [ ] Remove from cart
-- [ ] Checkout button
-- [ ] Order history page
+- [v] User registration form
+- [v] User login form
+- [v] Google login button
+- [v] Product list
+- [v] Add to cart
+- [v] Remove from cart
+- [v] Checkout button
+- [v] Order history page
 - [ ] Protected routes
 
 ---
 
 ## 🟢 PHASE 9 – Integration Frontend + Backend
 
-- [ ] Connect frontend to backend API
-- [ ] Handle JWT in frontend (localStorage)
-- [ ] Protect private pages
-- [ ] Test full purchase flow
+- [v] Connect frontend to backend API
+- [v] Handle JWT in frontend (localStorage)
+- [v] Protect private pages
+- [v] Test full purchase flow
 
 ---
 
 ## 🟢 PHASE 10 – Deployment (Render)
 
 ### Backend
-- [ ] Push backend to GitHub
+- [v] Push backend to GitHub
 - [ ] Create Render Web Service
 - [ ] Add env variables in Render
 - [ ] Connect PostgreSQL on Render

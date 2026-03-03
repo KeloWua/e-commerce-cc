@@ -7,12 +7,72 @@ const router = express.Router();
 
 
 
+
 router.get("/", asyncHandler(async (req, res) => {
-        const { rows } = await pool.query(`SELECT * FROM products`)
+    try {
+        const {
+            search,
+            minPrice,
+            maxPrice,
+            category,
+            sort,
+            page = 1,
+            limit = 12,
+        } = req.query;
+
+        let query = `SELECT * FROM products`;
+        let conditions = [];
+        let values = [];
+
+        if (search) {
+            values.push(`%${search}%`);
+            conditions.push(`name ILIKE $${values.length}`);
+        }
+
+        if (minPrice) {
+            values.push(minPrice);
+            conditions.push(`price >= $${values.length}`);
+        }
+
+        if (maxPrice) {
+            values.push(maxPrice);
+            conditions.push(`price <= $${values.length}`);
+        }
+        
+        if (category) {
+            values.push(category);
+            conditions.push(`category = $${values.length}`);
+        }
+
+        if (conditions.length > 0) {
+            query += ` WHERE ` + conditions.join(" AND ");
+        }
+
+        if (sort === "price_asc") {
+            query += ` ORDER BY price ASC`;
+        } else if (sort === "price_desc") {
+            query += ` ORDER BY price DESC`;
+        } else if (sort === "newest") {
+            query += ` ORDER BY created_at DESC`;
+        }
+
+        const offset = (page - 1) * limit;
+        values.push(limit);
+        values.push(offset);
+
+        query += ` LIMIT $${values.length - 1} OFFSET $${values.length}`;
+
+        const { rows } = await pool.query(query, values);
+        
         res.json({
             ok: true,
             products: rows
         });
+
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Server error' });
+    }
 }));
 
 

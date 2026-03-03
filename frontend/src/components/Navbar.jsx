@@ -37,14 +37,7 @@ const Navbar = () => {
                         <Link to="/products" className="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Products</Link>
                         <Link to="/orders" className="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Orders</Link>
 
-                        <div className="relative group">
-                            <input
-                                type="text"
-                                placeholder="Search..."
-                                className="pl-10 pr-4 py-2 bg-gray-100 border-none rounded-full text-sm focus:ring-2 focus:ring-indigo-500 w-48 transition-all group-focus-within:w-64"
-                            />
-                            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                        </div>
+
 
                         <div className="flex items-center space-x-4 border-l pl-8 border-gray-200">
 
