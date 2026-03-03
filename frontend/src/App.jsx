@@ -9,6 +9,8 @@ import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
 import OrderDetail from './pages/OrderDetail';
 import Profile from './pages/Profile';
+import PaymentCancel from './pages/PaymentCancel';
+import PaymentSuccess from './pages/PaymentSuccess';
 
 function App() {
     return (
@@ -23,7 +25,12 @@ function App() {
                     <Route path="/profile" element={<Profile />} />
                     
                     <Route path="/cart" element={<Cart />} />
+                    
                     <Route path="/checkout" element={<Checkout />} />
+
+                    <Route path="/cancel" element={<PaymentCancel />} />
+                    <Route path="/success" element={<PaymentSuccess />} />
+
                     <Route path="/orders" element={<Orders />} />
                     <Route path="/orders/:orderId" element={<OrderDetail />} />
                 </Routes>

@@ -10,6 +10,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // When App loads, try to get user from cookies
   useEffect(() => {
@@ -20,9 +21,10 @@ export const AuthProvider = ({ children }) => {
         setUser(me);
         localStorage.setItem('user', JSON.stringify(me));
       } catch {
-        // If unsuccesful, we try fallback to localStorage (normal login /"not google")
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) setUser(JSON.parse(storedUser));
+        setUser(null);
+        localStorage.removeItem('user');
+      } finally {
+        setLoading(false);
       }
     };
     loadUser();
@@ -50,7 +52,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
