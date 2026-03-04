@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import ProductCard from '../components/ProductCard';
 import { Filter, ChevronDown, Search } from 'lucide-react';
-import { ProductsContext } from '../context/ProductsProvider';
+import { ProductsContext } from '../context/ProductsContext';
 import ProductFilters from './ProductFilters';
 
 

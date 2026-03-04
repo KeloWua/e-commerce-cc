@@ -11,6 +11,7 @@ import OrderDetail from './pages/OrderDetail';
 import Profile from './pages/Profile';
 import PaymentCancel from './pages/PaymentCancel';
 import PaymentSuccess from './pages/PaymentSuccess';
+import ProductDetailPage from './pages/ProductDetailPage';
 
 function App() {
     return (
@@ -18,14 +19,17 @@ function App() {
             <Layout>
                 <Routes>
                     <Route path="/" element={<Home />} />
+
                     <Route path="/products" element={<Products />} />
+                    <Route path="/products/:productId" element={<ProductDetailPage />} />
+
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/logout" element={<Login />} />
                     <Route path="/profile" element={<Profile />} />
-                    
+
                     <Route path="/cart" element={<Cart />} />
-                    
+
                     <Route path="/checkout" element={<Checkout />} />
 
                     <Route path="/cancel" element={<PaymentCancel />} />

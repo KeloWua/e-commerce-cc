@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import api from "../services/api.js";
 import { OrderContext } from "./OrderContext.jsx";
-import { fetchProducts } from "../services/product.service.js";
+import { fetchProducts, fetchProductById } from "../services/product.service.js";
 
 export const ProductsContext = createContext();
 
@@ -28,6 +28,17 @@ export const ProductsProvider = ({ children }) => {
     }
   };
 
+  const getProductById = async (productId) => {
+    try {
+      const res = await fetchProductById(productId)
+      return res
+    } catch (error) {
+      console.error(error)
+    }
+
+  };
+
+
   const addItem = async (productId, quantity = 1) => {
     await api.post('/orders/items', { productId, quantity });
     await getProducts();
@@ -44,7 +55,7 @@ export const ProductsProvider = ({ children }) => {
 
 
   return (
-    <ProductsContext.Provider value={{ products, filters, setFilters, addItem, getProducts, clearproducts }}>
+    <ProductsContext.Provider value={{ products, filters, setFilters, addItem, getProducts, getProductById, clearproducts }}>
       {children}
     </ProductsContext.Provider>
   );

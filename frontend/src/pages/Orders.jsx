@@ -5,10 +5,7 @@ import { fetchUserOrders } from '../services/order.service';
 import { useNavigate } from 'react-router-dom';
 
 const Orders = () => {
-    const ordersMock = [
-        { id: '#VOG-8291', date: 'Feb 24, 2026', total: 145.00, status: 'Shipped' },
-        { id: '#VOG-7102', date: 'Jan 12, 2026', total: 85.50, status: 'Delivered' },
-    ];
+
     const [orders, setOrders] = useState([])
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);

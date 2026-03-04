@@ -1,31 +1,15 @@
 import { ShoppingBag, Star, Heart } from 'lucide-react';
 import { useContext } from 'react';
-import { ProductsContext } from '../context/ProductsProvider';
 import { AuthContext } from '../context/AuthContext';
-import { OrderContext } from '../context/OrderContext';
+import { Link } from 'react-router-dom';
+import { useCart } from '../hooks/useCart';
 
 
 const ProductCard = ({ id, name, price, category, image_url: image }) => {
 
-    const { addItem } = useContext(ProductsContext);
-    const { order } = useContext(OrderContext)
     const { user } = useContext(AuthContext);
-    
-    const getItemInCart = (productId) => {
-        const item = (order?.items ?? []).find(item => item.product_id === productId);
-        return item.quantity?? 0;
-    };
+    const { getItemQuantity, isInCart, addToCart } = useCart();
 
-
-
-    const handleItemInCart = (productId) => {
-        const isInCart = (order?.items ?? []).some(item => item.product_id === productId);
-        return isInCart;
-    }
-
-    const handleAddProductToOrder = async (productId) => {
-        await addItem(productId)
-    };
 
     return (
         <div className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-gray-100 p-2">
@@ -40,22 +24,22 @@ const ProductCard = ({ id, name, price, category, image_url: image }) => {
                 <div className="absolute inset-x-2 bottom-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                     {/* Add to cart toggle effect */}
                     {
-                        handleItemInCart(id)
+                        isInCart(id)
                             ?
                             <>
                                 <button
-                                    onClick={() => handleAddProductToOrder(id)}
+                                    onClick={() => addToCart(id)}
                                     disabled={!user}
                                     className="w-full py-3 bg-green-900 text-white font-bold rounded-lg flex items-center justify-center space-x-2 shadow-lg">
                                     <ShoppingBag className="h-4 w-4" />
                                     <span className="text-xs">Add more</span>
-                                    <span className="text-xs opacity-60">Qty: {getItemInCart(id) ?? 0}</span>
+                                    <span className="text-xs opacity-60">Qty: {getItemQuantity(id) ?? 0}</span>
                                 </button>
                             </>
                             :
                             <>
                                 <button
-                                    onClick={() => handleAddProductToOrder(id)}
+                                    onClick={() => addToCart(id)}
                                     disabled={!user}
                                     className="w-full py-3 bg-gray-900 text-white font-bold rounded-lg flex items-center justify-center space-x-2 shadow-lg">
                                     <ShoppingBag className="h-4 w-4" />
@@ -74,7 +58,10 @@ const ProductCard = ({ id, name, price, category, image_url: image }) => {
                         <span className="text-[10px] ml-1 text-gray-500 font-medium">0</span>
                     </div>
                 </div>
-                <h3 className="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors truncate">{name}</h3>
+                <Link to={`/products/${id}`}>
+                    <h3 className="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors truncate">{name}</h3>
+                </Link>
+
                 <p className="mt-1 text-lg font-black text-gray-900">${price}</p>
             </div>
         </div>
