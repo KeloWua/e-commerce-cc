@@ -2,11 +2,10 @@ import { useContext } from "react";
 import { ProductsContext } from "../context/ProductsContext";
 
 const ProductFilters = () => {
-  const { filters, setFilters } = useContext(ProductsContext);
+  const { filters, setFilters, categories } = useContext(ProductsContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFilters(prev => ({
       ...prev,
       [name]: value,
@@ -67,9 +66,9 @@ const ProductFilters = () => {
           className="w-full border rounded-lg px-3 py-2"
         >
           <option value="">All</option>
-          <option value="electronics">Electronics</option>
-          <option value="clothing">Clothing</option>
-          <option value="books">Books</option>
+          {categories?.map(category => 
+            <option value={category.id}>{category.name}</option>
+          )}
         </select>
       </div>
 

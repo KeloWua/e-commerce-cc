@@ -41,7 +41,7 @@ router.get("/", asyncHandler(async (req, res) => {
 
         if (category) {
             values.push(category);
-            conditions.push(`category = $${values.length}`);
+            conditions.push(`category_id = $${values.length}`);
         }
 
         if (conditions.length > 0) {
@@ -73,6 +73,18 @@ router.get("/", asyncHandler(async (req, res) => {
         console.error(error)
         res.status(500).json({ message: 'Server error' });
     }
+}));
+
+router.get("/categories", asyncHandler(async (req, res) => {
+    const { rows } = await pool.query(`SELECT id, name FROM categories`);
+    if (!rows.length > 0) {
+        return res.status(404).json({
+            ok: false, message: "No categories found"
+        })
+    }
+    res.json({
+        categories: rows
+    })
 }));
 
 

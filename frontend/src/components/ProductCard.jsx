@@ -13,14 +13,19 @@ const ProductCard = ({ id, name, price, category, image_url: image }) => {
 
     return (
         <div className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-gray-100 p-2">
-            <div className="relative aspect-[4/5] bg-gray-100 rounded-xl overflow-hidden">
-                {/* Placeholder for Product Image */}
-                <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-medium">
-                    <img src={image} alt={name} />
-                </div>
-                <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-gray-400 hover:text-pink-500 transition-colors shadow-sm">
-                    <Heart className="h-4 w-4" />
-                </button>
+                <div className="relative aspect-[4/5] bg-gray-100 rounded-xl overflow-hidden">
+                <Link to={`/products/${id}`}>
+                    {/* Placeholder for Product Image */}
+                    <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-medium">
+                        <img src={image} alt={name} />
+                    </div>
+                    {/* 
+                    FUTURE WISH LIST
+                    <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-gray-400 hover:text-pink-500 transition-colors shadow-sm">
+                        <Heart className="h-4 w-4" />
+                    </button>
+                     */}
+                </Link>
                 <div className="absolute inset-x-2 bottom-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                     {/* Add to cart toggle effect */}
                     {
@@ -49,7 +54,9 @@ const ProductCard = ({ id, name, price, category, image_url: image }) => {
 
                     }
                 </div>
+
             </div>
+                <Link to={`/products/${id}`}>
             <div className="p-4">
                 <div className="flex justify-between items-start mb-1">
                     <span className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">{category}</span>
@@ -58,12 +65,11 @@ const ProductCard = ({ id, name, price, category, image_url: image }) => {
                         <span className="text-[10px] ml-1 text-gray-500 font-medium">0</span>
                     </div>
                 </div>
-                <Link to={`/products/${id}`}>
-                    <h3 className="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors truncate">{name}</h3>
-                </Link>
+                <h3 className="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors truncate">{name}</h3>
 
                 <p className="mt-1 text-lg font-black text-gray-900">${price}</p>
             </div>
+                </Link >
         </div>
     );
 };

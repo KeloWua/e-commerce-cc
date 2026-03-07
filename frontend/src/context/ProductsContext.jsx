@@ -1,13 +1,14 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import api from "../services/api.js";
 import { OrderContext } from "./OrderContext.jsx";
-import { fetchProducts, fetchProductById } from "../services/product.service.js";
+import { fetchProducts, fetchProductById, fetchCategories } from "../services/product.service.js";
 
 export const ProductsContext = createContext();
 
 export const ProductsProvider = ({ children }) => {
   const { loadOrder } = useContext(OrderContext);
   const [products, setProducts] = useState(null);
+  const [categories, setCategories] = useState(null);
   const [filters, setFilters] = useState({
     search: "",
     minPrice: "",
@@ -49,13 +50,23 @@ export const ProductsProvider = ({ children }) => {
     setProducts([]);
   }
 
+  const getCategories = async () => {
+    try {
+      const { categories } = await fetchCategories();
+      setCategories(categories);
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
   useEffect(() => {
-    getProducts()
+    getProducts();
+    getCategories();
   }, [filters]);;
 
-
   return (
-    <ProductsContext.Provider value={{ products, filters, setFilters, addItem, getProducts, getProductById, clearproducts }}>
+    <ProductsContext.Provider value={{ products, filters, setFilters, categories,addItem, getProducts, getProductById, clearproducts }}>
       {children}
     </ProductsContext.Provider>
   );

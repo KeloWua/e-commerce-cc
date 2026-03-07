@@ -52,7 +52,7 @@ router.post('/checkout', authMiddleware, asyncHandler(async (req, res) => {
     payment_method_types: ['card'],
     mode: 'payment',
     line_items: lineItems,
-    success_url: `${FRONTEND_URL}/success`,
+    success_url: `${FRONTEND_URL}/success/${orderId}`,
     cancel_url: `${FRONTEND_URL}/cancel`,
 
     client_reference_id: orderId,

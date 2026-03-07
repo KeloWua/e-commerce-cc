@@ -1,18 +1,19 @@
 import { Package, ChevronRight, Clock } from 'lucide-react';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { fetchUserOrders } from '../services/order.service';
 import { useNavigate } from 'react-router-dom';
+import { OrderContext } from '../context/OrderContext';
 
 const Orders = () => {
 
     const [orders, setOrders] = useState([])
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
+    const { getUserOrders } = useContext(OrderContext);
 
     useEffect(() => {
         const loadOrders = async () => {
-            const userOrders = await fetchUserOrders();
+            const userOrders = await getUserOrders();
             setOrders(userOrders)
         }
         if(user)

@@ -12,3 +12,8 @@ export const fetchProductById = async (productId) => {
     const { data } = await api.get(`/products/${productId}`);
     return data
   };
+
+export const fetchCategories = async () => {
+  const { data } = await api.get(`/products/categories`);
+  return data
+}

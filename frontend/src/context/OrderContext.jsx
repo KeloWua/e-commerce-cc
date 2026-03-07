@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import {
+  fetchUserOrders,
   fetchPendingOrder,
   updateQtyProduct,
   stripePayment
@@ -42,6 +43,12 @@ export const OrderProvider = ({ children }) => {
     }
   };
 
+  const getUserOrders = async () => {
+    const data = await fetchUserOrders();
+    return data;
+  }
+
+
   // Update quantity
   const updateItemQty = async (productId, quantity) => {
     await updateQtyProduct(productId, quantity);
@@ -70,6 +77,7 @@ export const OrderProvider = ({ children }) => {
     <OrderContext.Provider
       value={{
         order,
+        getUserOrders,
         loadOrder,
         updateItemQty,
         stripePaymentCheckout
