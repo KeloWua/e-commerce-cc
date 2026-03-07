@@ -104,7 +104,7 @@ router.post('/items', authMiddleware, asyncHandler(async (req, res) => {
   try {
     await client.query('BEGIN');
 
-
+    // 1️⃣ We search pending order for the user
     let { rows } = await client.query(
       `SELECT id FROM orders 
        WHERE user_id = $1 AND status = 'pending'
@@ -114,8 +114,8 @@ router.post('/items', authMiddleware, asyncHandler(async (req, res) => {
 
     let orderId;
 
+    // 2️⃣ If no pending order, we creat eone
     if (rows.length === 0) {
-
       const newOrder = await client.query(
         `INSERT INTO orders (user_id, total, status)
          VALUES ($1, 0, 'pending')
@@ -127,30 +127,49 @@ router.post('/items', authMiddleware, asyncHandler(async (req, res) => {
       orderId = rows[0].id;
     }
 
-
-    const product = await client.query(
-      `SELECT price FROM products WHERE id = $1`,
+    // 3️⃣ We get product price and stoc
+    const productRes = await client.query(
+      `SELECT price, stock FROM products WHERE id = $1`,
       [productId]
     );
 
-    if (product.rows.length === 0) {
+    if (productRes.rows.length === 0) {
       throw new Error('Product not found');
     }
 
-    const price = product.rows[0].price;
+    const { price, stock } = productRes.rows[0];
 
+    // 4️⃣ We get actual quantity from cart
+    const existingRes = await client.query(
+      `SELECT quantity FROM order_items WHERE order_id = $1 AND product_id = $2`,
+      [orderId, productId]
+    );
 
+    let newQuantity = quantity;
+    if (existingRes.rows.length > 0) {
+      newQuantity = existingRes.rows[0].quantity + quantity;
+    }
+
+    // 5️⃣ Validate quantity is not higher than stock
+    if (newQuantity > stock) {
+      return res.status(400).json({
+        ok: false,
+        message: `Cannot add more than ${stock} items to the cart`
+      });
+    }
+
+    // 6️⃣ Insert or update quantity
     await client.query(
       `
       INSERT INTO order_items (order_id, product_id, quantity, price)
-      VALUES ($1,$2,$3,$4)
+      VALUES ($1, $2, $3, $4)
       ON CONFLICT (order_id, product_id)
-      DO UPDATE SET quantity = order_items.quantity + EXCLUDED.quantity
+      DO UPDATE SET quantity = EXCLUDED.quantity
       `,
-      [orderId, productId, quantity, price]
+      [orderId, productId, newQuantity, price]
     );
 
-
+    // 7️⃣ Update order total
     const totalResult = await client.query(
       `SELECT SUM(quantity * price) AS total
        FROM order_items WHERE order_id = $1`,
@@ -178,7 +197,7 @@ router.post('/items', authMiddleware, asyncHandler(async (req, res) => {
 router.patch('/items/:productId', authMiddleware, asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const { productId } = req.params;
-  const { quantity } = req.body;
+  let { quantity } = req.body;
 
   if (quantity < 0) {
     return res.status(400).json({ message: "Invalid quantity" });
@@ -189,23 +208,31 @@ router.patch('/items/:productId', authMiddleware, asyncHandler(async (req, res) 
   try {
     await client.query('BEGIN');
 
+    // Get pending order id
     const { rows } = await client.query(
-      `SELECT id FROM orders 
-       WHERE user_id = $1 AND status = 'pending'
-       LIMIT 1`,
+      `SELECT id FROM orders WHERE user_id = $1 AND status = 'pending' LIMIT 1`,
       [userId]
     );
 
-    if (rows.length === 0) {
-      throw new Error("No active order");
-    }
-
+    if (rows.length === 0) throw new Error("No active order");
     const orderId = rows[0].id;
+
+    // Get stock from products
+    const productRes = await client.query(
+      `SELECT stock FROM products WHERE id = $1`,
+      [productId]
+    );
+
+    if (productRes.rows.length === 0) throw new Error("Product not found");
+
+    const stock = productRes.rows[0].stock;
+
+    // Limit quantity to the available stock
+    if (quantity > stock) quantity = stock;
 
     if (quantity === 0) {
       await client.query(
-        `DELETE FROM order_items 
-         WHERE order_id = $1 AND product_id = $2`,
+        `DELETE FROM order_items WHERE order_id = $1 AND product_id = $2`,
         [orderId, productId]
       );
     } else {
@@ -217,10 +244,9 @@ router.patch('/items/:productId', authMiddleware, asyncHandler(async (req, res) 
       );
     }
 
-    // recalcular total
+    // Recalculate total
     const totalResult = await client.query(
-      `SELECT COALESCE(SUM(quantity * price), 0) AS total
-       FROM order_items WHERE order_id = $1`,
+      `SELECT COALESCE(SUM(quantity * price), 0) AS total FROM order_items WHERE order_id = $1`,
       [orderId]
     );
 
@@ -230,7 +256,6 @@ router.patch('/items/:productId', authMiddleware, asyncHandler(async (req, res) 
     );
 
     await client.query('COMMIT');
-
     res.json({ ok: true });
 
   } catch (err) {

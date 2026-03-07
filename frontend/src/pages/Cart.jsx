@@ -142,13 +142,7 @@ const Cart = () => {
               <CreditCard className="ml-3 h-5 w-5" />
             </button>
 
-            <Link
-              to="/checkout"
-              className="w-full py-5 mt-8 bg-white text-gray-900 font-bold rounded-2xl flex justify-center"
-            >
-              Proceed to Checkout
-              <CreditCard className="ml-3 h-5 w-5" />
-            </Link>
+
 
           </div>
         </div>

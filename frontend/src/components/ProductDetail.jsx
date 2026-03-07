@@ -85,7 +85,12 @@ const ProductDetail = ({ product, reviews: initialReviews }) => {
               min={1}
               max={product.stock}
               value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
+              onChange={(e) => {
+                let val = Number(e.target.value);
+                if (val > product.stock) val = product.stock; 
+                if (val < 1) val = 1; 
+                setQuantity(val);
+              }}
               className="w-20 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             {isInCart(product.id) ? (
