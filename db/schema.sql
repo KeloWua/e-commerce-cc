@@ -35,6 +35,14 @@ CREATE TABLE orders (
     total NUMERIC(10,2) NOT NULL,
     status VARCHAR(50) DEFAULT 'pending',
     stripe_session_id TEXT,
+    shipping_name VARCHAR(150),
+    shipping_email VARCHAR(150),
+    shipping_phone VARCHAR(50),
+    shipping_address_line1 TEXT,
+    shipping_address_line2 TEXT,
+    shipping_city VARCHAR(100),
+    shipping_postal_code VARCHAR(20),
+    shipping_country VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

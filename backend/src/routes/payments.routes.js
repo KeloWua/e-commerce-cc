@@ -70,7 +70,6 @@ router.post('/checkout', authMiddleware, asyncHandler(async (req, res) => {
   res.json({ url: session.url });
 }))
 
-
 // Webhook
 router.post("/webhook", express.raw({ type: "application/json" }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
@@ -89,41 +88,67 @@ router.post("/webhook", express.raw({ type: "application/json" }), async (req, r
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-
-    if (!session.shipping_details) {
-      console.error("No shipping address received");
-      return res.status(400).json({ error: "Shipping address missing" });
-    }
-
     const orderId = session.client_reference_id;
 
-    const shipping = session.shipping_details;
+    const customer = session.customer_details;
 
-    await pool.query(`
-      UPDATE orders
-      SET 
-        status='paid',
-        shipping_name=$1,
-        shipping_address=$2,
-        shipping_city=$3,
-        shipping_postal_code=$4,
-        shipping_country=$5
-      WHERE id=$6
-    `, [
-      shipping.name,
-      shipping.address.line1,
-      shipping.address.city,
-      shipping.address.postal_code,
-      shipping.address.country,
-      orderId
-    ]);
+    if (!customer || !customer.address) {
+      console.error("No customer address received");
+      return res.status(400).json({ error: "Customer address missing" });
+    }
 
+    const client = await pool.connect();
+
+    try {
+      await client.query('BEGIN');
+
+      // 1️⃣ Update orders with shipping and order info
+      await client.query(`
+        UPDATE orders
+        SET 
+          status='paid',
+          shipping_name=$1,
+          shipping_email=$2,
+          shipping_phone=$3,
+          shipping_address_line1=$4,
+          shipping_address_line2=$5,
+          shipping_city=$6,
+          shipping_postal_code=$7,
+          shipping_country=$8
+        WHERE id=$9
+      `, [
+        customer.name,
+        customer.email,
+        customer.phone,
+        customer.address.line1,
+        customer.address.line2,
+        customer.address.city,
+        customer.address.postal_code,
+        customer.address.country,
+        orderId
+      ]);
+
+      // 2️⃣ Decrease stock
+      await client.query(`
+        UPDATE products
+        SET stock = stock - oi.quantity
+        FROM order_items oi
+        WHERE oi.order_id = $1
+        AND products.id = oi.product_id
+      `, [orderId]);
+
+      await client.query('COMMIT');
+      console.log(`Order ${orderId} marked as paid and stock updated.`);
+    } catch (err) {
+      await client.query('ROLLBACK');
+      console.error("Error updating order and stock:", err);
+      return res.status(500).json({ error: "Failed to update order" });
+    } finally {
+      client.release();
+    }
   }
 
   res.status(200).json({ received: true });
 });
 
-
 export default router;
-
-

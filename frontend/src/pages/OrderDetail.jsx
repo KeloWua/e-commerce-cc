@@ -3,11 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 import { fetchOrderById } from '../services/order.service';
 import { ArrowLeft } from 'lucide-react';
 
+
 const OrderDetail = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
   const [items, setItems] = useState([]);
-
   useEffect(() => {
     const loadOrder = async () => {
       const data = await fetchOrderById(orderId);
@@ -28,7 +28,7 @@ const OrderDetail = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      
+
       {/* Header */}
       <div className="flex items-center justify-between mb-12">
         <div>
@@ -40,7 +40,7 @@ const OrderDetail = () => {
           </p>
         </div>
 
-        <Link 
+        <Link
           to="/orders"
           className="flex items-center text-gray-600 hover:text-gray-900 transition-colors font-bold"
         >
@@ -49,19 +49,62 @@ const OrderDetail = () => {
         </Link>
       </div>
 
+      {/* Shipping Address & User Info */}
+      <div className="flex flex-col md:flex-row md:justify-between gap-6 pb-5">
+        {/* User Info */}
+        <div className="bg-white shadow-md rounded-lg p-4 border border-gray-200 flex-1">
+          <h2 className="text-lg font-bold mb-2">User Information</h2>
+          <div className="flex flex-col gap-1 text-gray-700 text-sm">
+            <div>
+              <span className="font-semibold">Name:</span> <span className="font-light">{order.shipping_name}</span>
+            </div>
+            <div>
+              <span className="font-semibold">Email:</span> <span className="font-light">{order.shipping_email}</span>
+            </div>
+            <div>
+              <span className="font-semibold">Phone:</span> <span className="font-light">{order.shipping_phone || "N/A"}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Shipping Address */}
+        <div className="bg-white shadow-md rounded-lg p-4 border border-gray-200 flex-1">
+          <h2 className="text-lg font-bold mb-2">Shipping Address</h2>
+          <div className="flex flex-col gap-1 text-gray-700 text-sm">
+            <div>
+              <span className="font-semibold">Address line 1:</span> <span className="font-light">{order.shipping_address_line1}</span>
+            </div>
+            {order.shipping_address_line2 && (
+              <div>
+                <span className="font-semibold">Address line 2:</span> <span className="font-light">{order.shipping_address_line2}</span>
+              </div>
+            )}
+            <div>
+              <span className="font-semibold">City:</span> <span className="font-light">{order.shipping_city}</span>
+            </div>
+            <div>
+              <span className="font-semibold">Post Code:</span> <span className="font-light">{order.shipping_postal_code}</span>
+            </div>
+            <div>
+              <span className="font-semibold">Country:</span> <span className="font-light">{order.shipping_country}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-12">
 
         {/* Items List */}
         <div className="flex-grow space-y-6">
           {items.map((item, i) => (
-            <div 
-              key={i} 
+            <div
+              key={i}
               className="flex items-center gap-6 p-6 bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
             >
               <div className="w-24 h-24 bg-gray-100 rounded-2xl flex items-center justify-center">
-                <img 
-                  src={item.image_url} 
-                  alt={item.name} 
+                <img
+                  src={item.image_url}
+                  alt={item.name}
                   className="rounded-lg object-cover w-full h-full"
                 />
               </div>
