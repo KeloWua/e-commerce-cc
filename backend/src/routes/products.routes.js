@@ -84,7 +84,10 @@ router.get("/:id", asyncHandler(async (req, res) => {
             ok: false, message: "Product not found"
         })
     }
-    const { rows: reviews } = await pool.query(`SELECT * FROM reviews WHERE product_id = $1`, [id]);
+    const { rows: reviews } = await pool.query(`SELECT r.id, r.rating, r.comment, r.created_at, u.name AS user_name
+   FROM reviews r
+   JOIN users u ON r.user_id = u.id
+   WHERE r.product_id = $1`, [id]);
     res.json({
         ok: true,
         product: rows[0],
