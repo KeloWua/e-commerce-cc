@@ -1,6 +1,5 @@
 import { Trash2, Plus, Minus, CreditCard } from 'lucide-react';
 import { useContext } from 'react';
-import { Link, redirect } from 'react-router-dom';
 import { OrderContext } from '../context/OrderContext';
 
 const Cart = () => {

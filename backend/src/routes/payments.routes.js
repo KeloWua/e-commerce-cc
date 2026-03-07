@@ -60,6 +60,10 @@ router.post('/checkout', authMiddleware, asyncHandler(async (req, res) => {
     shipping_address_collection: {
       allowed_countries: ["US", "ES", "FR", "DE"]
     },
+
+    phone_number_collection: {
+      enabled: true
+    }
   });
 
   await pool.query(
