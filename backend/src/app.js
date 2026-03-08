@@ -17,6 +17,9 @@ import errorHandler from './middleware/error.middleware.js';
 
 const app = express();
 
+// use Https from Render
+app.set('trust proxy', 1);
+
 /**
  * Global Middlewares
  */
