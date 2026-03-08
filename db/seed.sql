@@ -1,4 +1,30 @@
+-- Categories seed
 
+INSERT INTO categories (name) VALUES
+('beauty'),
+('fragrances'),
+('furniture'),
+('groceries'),
+('home decoration'),
+('kitchen accessories'),
+('laptops'),
+('mens shirts'),
+('mens shoes'),
+('mens watches'),
+('mobile accessories'),
+('motorcycle'),
+('skin care'),
+('smartphones'),
+('sports accessories'),
+('sunglasses'),
+('tablets'),
+('tops'),
+('vehicle'),
+('womens bags'),
+('womens dresses'),
+('womens jewellery'),
+('womens shoes'),
+('womens watches');
 -- Product Seed
 
 INSERT INTO products (name, description, price, stock, image_url, category_id) 
@@ -390,30 +416,3 @@ INSERT INTO products (name, description, price, stock, image_url, category_id)
 INSERT INTO products (name, description, price, stock, image_url, category_id) 
         VALUES ('Women''s Wrist Watch', 'The Women''s Wrist Watch is a versatile and fashionable timepiece for everyday wear. With a comfortable strap and a simple yet elegant design, it complements various styles.', 129.99, 12, 'https://cdn.dummyjson.com/product-images/womens-watches/women''s-wrist-watch/1.webp', 24);
 
--- Categories seed
-
-INSERT INTO categories (name) VALUES
-('beauty'),
-('fragrances'),
-('furniture'),
-('groceries'),
-('home decoration'),
-('kitchen accessories'),
-('laptops'),
-('mens shirts'),
-('mens shoes'),
-('mens watches'),
-('mobile accessories'),
-('motorcycle'),
-('skin care'),
-('smartphones'),
-('sports accessories'),
-('sunglasses'),
-('tablets'),
-('tops'),
-('vehicle'),
-('womens bags'),
-('womens dresses'),
-('womens jewellery'),
-('womens shoes'),
-('womens watches');

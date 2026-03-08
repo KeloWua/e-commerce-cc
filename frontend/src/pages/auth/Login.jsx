@@ -158,7 +158,7 @@ const Login = () => {
                     <p className="mb-4 text-gray-500 font-bold text-lg drop-shadow-md">
                         Or sign in using:
                     </p>
-                    <a href="http://localhost:3000/auth/google">
+                    <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/auth/google`}>
                         <button className="flex items-center justify-center w-52 py-3 bg-gray-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl">
                             <FcGoogle className="h-6 w-6 mr-2 drop-shadow-lg" />
                             Google

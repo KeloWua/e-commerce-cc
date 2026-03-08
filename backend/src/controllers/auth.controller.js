@@ -158,7 +158,7 @@ export const forgotPassword = async (req, res) => {
         [hash, expires, user.id]
     );
 
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${token}`;
 
     try {
         await resend.emails.send({
