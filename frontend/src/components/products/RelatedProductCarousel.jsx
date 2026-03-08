@@ -22,7 +22,7 @@ const RelatedProductsCarousel = ({ products }) => {
             </h2>
 
             <div className="relative">
-                {/* Botón izquierda */}
+                {/* Left button */}
                 <button
                     onClick={scrollLeft}
                     className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white border rounded-full p-2 shadow hover:bg-gray-100 transition"
@@ -30,7 +30,7 @@ const RelatedProductsCarousel = ({ products }) => {
                     &#8592;
                 </button>
 
-                {/* Carrusel con scroll */}
+                {/* Carousel with scroll */}
                 <div
                     ref={scrollRef}
                     className="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide py-2"
@@ -42,7 +42,7 @@ const RelatedProductsCarousel = ({ products }) => {
                     ))}
                 </div>
 
-                {/* Botón derecha */}
+                {/* Right button */}
                 <button
                     onClick={scrollRight}
                     className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white border rounded-full p-2 shadow hover:bg-gray-100 transition"

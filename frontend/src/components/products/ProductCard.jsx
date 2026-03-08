@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../hooks/useCart';
+import RatingStars from '../ui/RatingStars';
 
 const ProductCard = ({ id, name, price, category, image_url: image, rating }) => {
     const { user } = useContext(AuthContext);
@@ -11,7 +12,7 @@ const ProductCard = ({ id, name, price, category, image_url: image, rating }) =>
     return (
         <div className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-gray-100 p-2">
 
-            {/* Imagen y enlace */}
+            {/* Image and link */}
             <div className="relative aspect-[4/5] bg-gray-100 rounded-xl overflow-hidden">
                 <Link to={`/products/${id}`}>
                     <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-medium">
@@ -19,7 +20,7 @@ const ProductCard = ({ id, name, price, category, image_url: image, rating }) =>
                     </div>
                 </Link>
 
-                {/* Botón Add to Cart */}
+                {/* Add to cart */}
                 <div
                     className="
             absolute inset-x-2 bottom-2 
@@ -52,14 +53,14 @@ const ProductCard = ({ id, name, price, category, image_url: image, rating }) =>
                 </div>
             </div>
 
-            {/* Info del producto */}
+            {/* Product info */}
             <Link to={`/products/${id}`}>
                 <div className="p-4">
                     <div className="flex justify-between items-start mb-1">
                         <span className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">{category}</span>
                         <div className="flex items-center text-yellow-400">
                             <Star className="h-3 w-3 fill-current" />
-                            <span className="text-[10px] ml-1 text-gray-500 font-medium">{rating}</span>
+                            <span className="text-[10px] ml-1 text-gray-500 font-medium">{rating || '0'}</span>
                         </div>
                     </div>
 

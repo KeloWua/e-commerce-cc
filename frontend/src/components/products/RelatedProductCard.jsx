@@ -11,12 +11,12 @@ const RelatedProductCard = ({ id, name, price, category, image_url: image }) => 
     return (
         <div className="group relative bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100 p-1">
             <div className="relative aspect-[4/5] bg-gray-100 rounded-lg overflow-hidden">
-                {/* Imagen */}
+                {/* Image */}
                 <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-medium">
                     <img src={image} alt={name} className="object-cover w-full h-full" />
                 </div>
 
-                {/* Favoritos */}
+                {/* Favourite */}
                 <button className="absolute top-2 right-2 p-1 bg-white/80 backdrop-blur-md rounded-full text-gray-400 hover:text-pink-500 transition-colors shadow-sm">
                     <Heart className="h-3 w-3" />
                 </button>
