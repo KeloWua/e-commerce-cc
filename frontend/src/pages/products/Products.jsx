@@ -1,4 +1,4 @@
-import { useContext, useState, useMemo } from 'react';
+import { useContext, useState, useMemo, useRef } from 'react';
 import ProductCard from '../../components/products/ProductCard';
 import Pagination from '../../components/ui/Pagination';
 import { Filter, ChevronDown, Search } from 'lucide-react';
@@ -8,10 +8,28 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 const Products = () => {
-
     const { products, filters, setFilters, total, categories } = useContext(ProductsContext);
     const [filterOptions, setFilterOptions] = useState(false);
     const [sortOptions, setSortOptions] = useState(false);
+    const filtersRef = useRef(null);
+
+    const handleToggleFilters = () => {
+        const newState = !filterOptions;
+        setFilterOptions(newState);
+        setSortOptions(false);
+
+        // Only scroll on mobile and if opening filters
+        if (newState && window.innerWidth < 768) {
+            setTimeout(() => {
+                const element = filtersRef.current;
+                if (element) {
+                    const yOffset = -100; // Offset to not cut the top
+                    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+            }, 100);
+        }
+    };
     const totalPages = useMemo(() => Math.ceil(total / filters.limit) || 1, [total, filters.limit]);
 
     const [searchParams] = useSearchParams();
@@ -101,7 +119,7 @@ const Products = () => {
                 <div className="flex items-center gap-4">
                     {/* Filter */}
                     <button
-                        onClick={() => { setFilterOptions(prev => !prev); setSortOptions(false) }}
+                        onClick={handleToggleFilters}
                         className="flex items-center space-x-2 px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-500">
                         <Filter className="h-4 w-4" />
                         <span>Filter</span>
@@ -143,7 +161,9 @@ const Products = () => {
                 </div>
             </div>
             {/* Filters */}
-            {filterOptions && <ProductFilters />}
+            <div ref={filtersRef} className="transition-all duration-300">
+                {filterOptions && <ProductFilters />}
+            </div>
 
             <div className="pt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {products?.map((product, i) => (

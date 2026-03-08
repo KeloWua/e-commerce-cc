@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
+import ScrollToTop from './components/layout/ScrollToTop';
 import Home from './pages/info/Home';
 import Products from './pages/products/Products';
 import Login from './pages/auth/Login';
@@ -13,10 +14,14 @@ import PaymentSuccess from './pages/orders/PaymentSuccess';
 import ProductDetailPage from './pages/products/ProductDetailPage';
 import AboutUs from './pages/info/AboutUs';
 import ResetPassword from './pages/auth/ResetPassword';
+import FAQ from './pages/info/FAQ';
+import Shipping from './pages/info/Shipping';
+import Returns from './pages/info/Returns';
 
 function App() {
     return (
         <BrowserRouter>
+            <ScrollToTop />
             <Layout>
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -24,6 +29,9 @@ function App() {
                     <Route path="/products" element={<Products />} />
                     <Route path="/products/:productId" element={<ProductDetailPage />} />
                     <Route path="/about-us" element={<AboutUs />} />
+                    <Route path="/faq" element={<FAQ />} />
+                    <Route path="/shipping" element={<Shipping />} />
+                    <Route path="/returns" element={<Returns />} />
 
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />

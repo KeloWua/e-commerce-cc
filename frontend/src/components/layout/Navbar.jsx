@@ -84,10 +84,24 @@ const Navbar = () => {
             {isMenuOpen && (
                 <div className="md:hidden bg-white border-t border-gray-100 animate-in slide-in-from-top duration-300">
                     <div className="px-2 pt-2 pb-3 space-y-1">
-                        <Link to="/products" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md font-medium">Products</Link>
-                        <Link to="/orders" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md font-medium">Orders</Link>
-                        <Link to="/cart" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md font-medium">Cart</Link>
-                        <Link to="/login" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md font-medium">Login</Link>
+                        <Link to="/" onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md font-medium">Home</Link>
+                        <Link to="/products" onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md font-medium">Products</Link>
+                        <Link to="/about-us" onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md font-medium">About Us</Link>
+                        <Link to="/orders" onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md font-medium">Orders</Link>
+                        <Link to="/cart" onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md font-medium">Cart</Link>
+                        {
+                            userLoggedIn ?
+                                <>
+                                    <Link to="/profile" onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md font-medium">Profile</Link>
+                                    <Link to="/logout"
+                                        onClick={() => {
+                                            logout();
+                                            setIsMenuOpen(false);
+                                        }} className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md font-medium">Logout</Link>
+                                </> :
+                                <>
+                                    <Link to="/login" onClick={() => setIsMenuOpen(false)} className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md font-medium">Login</Link>
+                                </>}
                     </div>
                 </div>
             )}
