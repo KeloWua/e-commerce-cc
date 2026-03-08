@@ -72,9 +72,9 @@ const Orders = () => {
                             </div>
 
                             <button
-                                onClick={() => handleGetOrder(order.id)}
+                                onClick={() => order.status === 'pending' ? navigate('/cart') : handleGetOrder(order.id)}
                                 className="p-3 bg-gray-50 rounded-full text-gray-400 group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                                <ChevronRight className="h-5 w-5" />
+                                <ChevronRight className="h-5 w-5"/>
                             </button>
                         </div>
                     </div>

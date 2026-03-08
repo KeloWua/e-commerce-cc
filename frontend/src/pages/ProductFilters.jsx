@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { ProductsContext } from "../context/ProductsContext";
 
 const ProductFilters = () => {
-  const { filters, setFilters, categories } = useContext(ProductsContext);
+  const { filters, setFilters, categories, total } = useContext(ProductsContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -12,7 +12,6 @@ const ProductFilters = () => {
       page: 1 // reset page when filter changes
     }));
   };
-
   const handleReset = () => {
     setFilters({
       search: "",
@@ -67,7 +66,7 @@ const ProductFilters = () => {
         >
           <option value="">All</option>
           {categories?.map(category => 
-            <option value={category.id}>{category.name}</option>
+            <option key={category.id} value={category.id}>{category.name}</option>
           )}
         </select>
       </div>

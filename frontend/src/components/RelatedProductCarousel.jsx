@@ -35,7 +35,7 @@ const RelatedProductsCarousel = ({ products }) => {
           ref={scrollRef}
           className="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide py-2"
         >
-          {visibleProducts.map((product) => (
+          {visibleProducts?.map((product) => (
             <div key={product.id} className="flex-shrink-0 w-64">
               <RelatedProductCard {...product} />
             </div>

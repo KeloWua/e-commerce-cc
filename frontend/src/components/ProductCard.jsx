@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 
 
-const ProductCard = ({ id, name, price, category, image_url: image }) => {
+const ProductCard = ({ id, name, price, category, image_url: image, rating }) => {
 
     const { user } = useContext(AuthContext);
     const { getItemQuantity, isInCart, addToCart } = useCart();
@@ -62,7 +62,7 @@ const ProductCard = ({ id, name, price, category, image_url: image }) => {
                     <span className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">{category}</span>
                     <div className="flex items-center text-yellow-400">
                         <Star className="h-3 w-3 fill-current" />
-                        <span className="text-[10px] ml-1 text-gray-500 font-medium">0</span>
+                        <span className="text-[10px] ml-1 text-gray-500 font-medium">{rating}</span>
                     </div>
                 </div>
                 <h3 className="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors truncate">{name}</h3>

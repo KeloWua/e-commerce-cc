@@ -24,6 +24,7 @@ router.get("/", asyncHandler(async (req, res) => {
         let conditions = [];
         let values = [];
 
+        // Construir condiciones dinámicas según filtros
         if (search) {
             values.push(`%${search}%`);
             conditions.push(`name ILIKE $${values.length}`);
@@ -44,33 +45,41 @@ router.get("/", asyncHandler(async (req, res) => {
             conditions.push(`category_id = $${values.length}`);
         }
 
+        // Agregar WHERE si hay condiciones
         if (conditions.length > 0) {
-            query += ` WHERE ` + conditions.join(" AND ");
+            query += " WHERE " + conditions.join(" AND ");
         }
 
+        // Agregar orden
         if (sort === "price_asc") {
-            query += ` ORDER BY price ASC`;
+            query += " ORDER BY price ASC";
         } else if (sort === "price_desc") {
-            query += ` ORDER BY price DESC`;
+            query += " ORDER BY price DESC";
         } else if (sort === "newest") {
-            query += ` ORDER BY created_at DESC`;
+            query += " ORDER BY created_at DESC";
         }
 
+        // --- TOTAL de productos filtrados ---
+        const totalQuery = `SELECT COUNT(*) FROM products ${conditions.length > 0 ? "WHERE " + conditions.join(" AND ") : ""}`;
+        const totalResult = await pool.query(totalQuery, values);
+        const total = Number(totalResult.rows[0].count);
+
+        // --- PAGINACIÓN ---
         const offset = (page - 1) * limit;
         values.push(limit);
         values.push(offset);
-
         query += ` LIMIT $${values.length - 1} OFFSET $${values.length}`;
 
-        const { rows } = await pool.query(query, values);
+        const { rows: products } = await pool.query(query, values);
 
         res.json({
             ok: true,
-            products: rows
+            products,
+            total
         });
 
     } catch (error) {
-        console.error(error)
+        console.error(error);
         res.status(500).json({ message: 'Server error' });
     }
 }));
@@ -96,7 +105,7 @@ router.get("/:id", asyncHandler(async (req, res) => {
             ok: false, message: "Product not found"
         })
     }
-    const { rows: reviews } = await pool.query(`SELECT r.id, r.rating, r.comment, r.created_at, u.name AS user_name
+    const { rows: reviews } = await pool.query(`SELECT r.id, r.rating, r.comment, r.created_at, u.name AS user_name, r.user_id
    FROM reviews r
    JOIN users u ON r.user_id = u.id
    WHERE r.product_id = $1`, [id]);
@@ -145,7 +154,15 @@ router.post('/:productId/review', authMiddleware, asyncHandler
             SELECT id FROM reviews WHERE product_id = $1 AND user_id = $2
             `, [productIdNumber, userId]);
         if (existingReview.rows.length > 0) {
-            return res.status(400).json({ message: "You have already reviewed this product" });
+            console.log('exists')
+            await pool.query(`UPDATE reviews
+                SET rating = $1 ,
+                comment = $2
+                WHERE user_id = $3 AND
+                product_id = $4`, [rating, comment, userId, productId])
+                return res.status(200).json({
+                    message: 'Updated succesfully'
+                })
         }
 
         const insertReview = await pool.query(`

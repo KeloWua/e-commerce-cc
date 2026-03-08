@@ -7,20 +7,18 @@ import { useCart } from "../hooks/useCart";
 import { createReview } from "../services/reviews";
 import { ProductsContext } from "../context/ProductsContext";
 import RelatedProductsCarousel from "./RelatedProductCarousel";
+import { useRef } from "react";
 
 const ProductDetail = ({ product, reviews: initialReviews }) => {
   const { user } = useContext(AuthContext);
   const { getItemQuantity, isInCart, addToCart } = useCart();
-
   const { products } = useContext(ProductsContext);
 
   const [quantity, setQuantity] = useState(1);
   const [reviews, setReviews] = useState(initialReviews || []);
   const [postReview, setPostReview] = useState(false);
-  console.log(reviews)
   const { averageRating, totalReviews } = useReviews(reviews);
-
-  const userReview = user ? reviews.find(r => r.user_id === user.id) : null;
+  const userReview = user ? initialReviews.find(r => r.user_id === user.id) : null;
   const handleSubmitReview = async ({ rating, comment }) => {
     if (!rating || !comment.trim()) return;
 
@@ -40,16 +38,20 @@ const ProductDetail = ({ product, reviews: initialReviews }) => {
     }
   };
 
-  useEffect(() => {
-    // Scroll al top
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const prevProductId = useRef(product.id);
 
-    // Resetear estado de reviews y cantidad
-    setReviews(initialReviews || []);
-    setQuantity(1);
-    setPostReview(false);
-  }, [product, initialReviews]);
-  
+  useEffect(() => {
+    // Scroll when change product
+    if (prevProductId.current !== product.id) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      setReviews(initialReviews || []);
+      setQuantity(1);
+      setPostReview(false);
+
+      prevProductId.current = product.id; // update ref
+    }
+  }, [product.id, initialReviews]);
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
 

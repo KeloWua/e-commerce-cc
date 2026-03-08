@@ -8,6 +8,7 @@ export const ProductsContext = createContext();
 export const ProductsProvider = ({ children }) => {
   const { loadOrder } = useContext(OrderContext);
   const [products, setProducts] = useState(null);
+  const [total, setTotal] = useState(null);
   const [categories, setCategories] = useState(null);
   const [filters, setFilters] = useState({
     search: "",
@@ -18,12 +19,12 @@ export const ProductsProvider = ({ children }) => {
     page: 1,
     limit: 12,
   });
-
   const getProducts = async () => {
     try {
 
-      const res = await fetchProducts(filters);
-      setProducts(res);
+      const { products, total } = await fetchProducts(filters);
+      setProducts(products);
+      setTotal(total)
     } catch (error) {
       setProducts([])
     }
@@ -66,7 +67,7 @@ export const ProductsProvider = ({ children }) => {
   }, [filters]);;
 
   return (
-    <ProductsContext.Provider value={{ products, filters, setFilters, categories,addItem, getProducts, getProductById, clearproducts }}>
+    <ProductsContext.Provider value={{ products, filters, setFilters, categories,addItem, getProducts, getProductById, clearproducts, total }}>
       {children}
     </ProductsContext.Provider>
   );

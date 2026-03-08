@@ -28,13 +28,13 @@ export const OrderProvider = ({ children }) => {
       // Normalizing data to avoid issues with e.g(' .toFixed(2) '...)
       const normalized = {
         ...data,
-        items: data.items.map(item => ({
+        items: Array.isArray(data.items) ? data.items.map(item => ({
           ...item,
           price: Number(item.price),
           quantity: Number(item.quantity)
-        }))
+        })) : []
       };
-
+      
       setOrder(normalized);
 
     } catch (error) {
@@ -69,7 +69,7 @@ export const OrderProvider = ({ children }) => {
 
 
   const stripePaymentCheckout = async () => {
-    const stripeUrl = await stripePayment(); 
+    const stripeUrl = await stripePayment();
     return stripeUrl; //returns link to checkout with order
   };
 

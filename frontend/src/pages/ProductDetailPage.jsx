@@ -9,7 +9,6 @@ const ProductDetailPage = () => {
   const [product, setProduct] = useState(null);
 
 
-
   useEffect(() => {
     const loadProduct = async () => {
       const data = await getProductById(productId);
@@ -17,7 +16,6 @@ const ProductDetailPage = () => {
     };
 
     loadProduct();
-    console.log(product)
   }, [productId, getProductById]);
 
   if (!product) return <p className="text-center mt-12">Loading product...</p>;

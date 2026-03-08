@@ -67,3 +67,28 @@ CREATE TABLE reviews (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (product_id, user_id)
 );
+
+
+-- TRIGGERS 
+-- Avg Reviews Trigger
+CREATE OR REPLACE FUNCTION update_product_rating()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Recalculates average rating for product
+  UPDATE products
+  SET rating = (
+    SELECT COALESCE(AVG(rating)::NUMERIC(3,2), 0)
+    FROM reviews
+    WHERE product_id = NEW.product_id
+  )
+  WHERE id = NEW.product_id;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER trg_update_product_rating
+AFTER INSERT OR UPDATE OR DELETE ON reviews
+FOR EACH ROW
+EXECUTE FUNCTION update_product_rating();

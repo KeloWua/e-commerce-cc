@@ -5,7 +5,7 @@ import api from "./api";
 export const fetchProducts = async (filters) => {
   const params = new URLSearchParams(filters).toString();
   const { data } = await api.get(`/products?${params}`);
-  return data.products;
+  return data;
 };
 
 export const fetchProductById = async (productId) => {

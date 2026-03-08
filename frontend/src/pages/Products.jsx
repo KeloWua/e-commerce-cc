@@ -1,27 +1,42 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState, useMemo } from 'react';
 import ProductCard from '../components/ProductCard';
+import Pagination from '../components/Pagination';
 import { Filter, ChevronDown, Search } from 'lucide-react';
 import { ProductsContext } from '../context/ProductsContext';
 import ProductFilters from './ProductFilters';
-
+import { useEffect } from 'react';
 
 const Products = () => {
 
-    const { products, filters, setFilters } = useContext(ProductsContext);
+    const { products, filters, setFilters, total, categories } = useContext(ProductsContext);
     const [filterOptions, setFilterOptions] = useState(false);
     const [sortOptions, setSortOptions] = useState(false);
+    const totalPages = useMemo(() => Math.ceil(total / filters.limit) || 1, [total, filters.limit]);
 
-
+    useEffect(() => {
+        if (filters.page > totalPages) {
+            setFilters(prev => ({ ...prev, page: totalPages }));
+        }
+    }, [totalPages]);
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900">Explore Collection</h1>
-                    {products?.length ?
-                        <p className="text-gray-500 mt-2">Showing all {products?.length} items in the curated selection</p>
-                        : <p className="text-gray-500 mt-2">No items found</p>
-                    }
+                    <p className="text-gray-500 mt-2">
+                        {products?.length ? (
+                            <>
+                                Showing {products.length} item{products.length > 1 ? 's' : ''} in{' '}
+                                <span className="font-bold">
+                                    {categories?.[filters?.category - 1]?.name || 'all items'}
+                                </span>{' '}
+                                category
+                            </>
+                        ) : (
+                            'No items found'
+                        )}
+                    </p>
                     {/* Search Bar */}
                     <div className='pt-4'>
                         <div className="relative group">
@@ -41,12 +56,25 @@ const Products = () => {
                             <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                         </div>
                     </div>
+                    <div className='pt-3'>
+                        <Pagination
+                            totalPages={totalPages || 1}
+                            currentPage={filters.page}
+                            goToPage={(page) => {
+                                setFilters(prev => ({
+                                    ...prev,
+                                    page
+                                }))
+                            }}
+                        />
+                    </div>
                 </div>
+
 
                 <div className="flex items-center gap-4">
                     {/* Filter */}
                     <button
-                        onClick={() => {setFilterOptions(prev => !prev); setSortOptions(false)}}
+                        onClick={() => { setFilterOptions(prev => !prev); setSortOptions(false) }}
                         className="flex items-center space-x-2 px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-500">
                         <Filter className="h-4 w-4" />
                         <span>Filter</span>
@@ -55,7 +83,7 @@ const Products = () => {
                     {/* Sort By */}
                     <div className="relative">
                         <button
-                            onClick={() => {setSortOptions(prev => !prev); setFilterOptions(false)}}
+                            onClick={() => { setSortOptions(prev => !prev); setFilterOptions(false) }}
                             className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-500"
                         >
                             <span>Sort By</span>
@@ -110,7 +138,20 @@ const Products = () => {
                     <ProductCard key={i} {...product} />
                 ))}
             </div>
+            <div className='pt-3'>
+                <Pagination
+                    totalPages={totalPages || 1}
+                    currentPage={filters.page}
+                    goToPage={(page) => {
+                        setFilters(prev => ({
+                            ...prev,
+                            page
+                        }))
+                    }}
+                />
+            </div>
         </div>
+
     );
 };
 
