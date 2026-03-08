@@ -1,9 +1,8 @@
-import { ShoppingBag, Star, Heart } from 'lucide-react';
+import { ShoppingBag, ShoppingCart, Star, Heart } from 'lucide-react';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../hooks/useCart';
-import RatingStars from '../ui/RatingStars';
 
 const ProductCard = ({ id, name, price, category, image_url: image, rating }) => {
     const { user } = useContext(AuthContext);
@@ -31,20 +30,27 @@ const ProductCard = ({ id, name, price, category, image_url: image, rating }) =>
           "
                 >
                     {isInCart(id) ? (
-                        <button
-                            onClick={() => addToCart(id)}
-                            disabled={!user}
-                            className="w-full py-3 bg-green-900 text-white font-bold rounded-lg flex items-center justify-center space-x-2 shadow-lg"
-                        >
-                            <ShoppingBag className="h-4 w-4" />
-                            <span className="text-xs">Add more</span>
-                            <span className="text-xs opacity-60">Qty: {getItemQuantity(id) ?? 0}</span>
-                        </button>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => addToCart(id)}
+                                disabled={!user}
+                                className="flex-1 py-3 bg-emerald-600 text-white font-bold rounded-lg flex items-center justify-center space-x-2 shadow-lg active:scale-95 transition-transform"
+                            >
+                                <ShoppingBag className="h-4 w-4" />
+                                <span className="text-xs">Add ({getItemQuantity(id)})</span>
+                            </button>
+                            <Link
+                                to="/cart"
+                                className="p-3 bg-indigo-600 text-white rounded-lg flex items-center justify-center shadow-lg active:scale-95 transition-transform"
+                            >
+                                <ShoppingCart className="h-4 w-4" />
+                            </Link>
+                        </div>
                     ) : (
                         <button
                             onClick={() => addToCart(id)}
                             disabled={!user}
-                            className="w-full py-3 bg-gray-900 text-white font-bold rounded-lg flex items-center justify-center space-x-2 shadow-lg"
+                            className="w-full py-3 bg-gray-900 text-white font-bold rounded-lg flex items-center justify-center space-x-2 shadow-lg active:scale-95 transition-transform"
                         >
                             <ShoppingBag className="h-4 w-4" />
                             <span className="text-xs">Add to Cart</span>
