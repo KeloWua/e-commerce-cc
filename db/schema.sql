@@ -26,7 +26,7 @@ CREATE TABLE products (
     price NUMERIC(10,2) NOT NULL,
     stock INTEGER NOT NULL DEFAULT 0,
     image_url TEXT,
-    rating INTEGER CHECK (rating >= 1 AND rating <= 5),
+    rating NUMERIC(3,2) DEFAULT 0 CHECK (rating >= 0 AND rating <= 5),
     category_id INTEGER REFERENCES categories(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

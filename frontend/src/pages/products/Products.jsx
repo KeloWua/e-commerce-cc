@@ -38,8 +38,8 @@ const Products = () => {
         { value: "price_asc", label: "Lower Price" },
         { value: "price_desc", label: "Higher Price" },
         { value: "newest", label: "Newest" },
-        { value: "rating_desc", label: "Best Rating" },
-        { value: "rating_asc", label: "Lower Rating" },
+        { value: "rating_asc", label: "Best Rating" },
+        { value: "rating_desc", label: "Lower Rating" },
     ];
 
     useEffect(() => {
