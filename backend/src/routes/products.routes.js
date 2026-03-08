@@ -57,6 +57,10 @@ router.get("/", asyncHandler(async (req, res) => {
             query += " ORDER BY price DESC";
         } else if (sort === "newest") {
             query += " ORDER BY created_at DESC";
+        } else if (sort === "rating_asc") {
+            query += " ORDER BY rating ASC";
+        } else if (sort === "rating_desc") {
+            query += " ORDER BY rating DESC";
         }
 
         // --- TOTAL de productos filtrados ---

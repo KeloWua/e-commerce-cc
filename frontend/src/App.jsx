@@ -11,6 +11,7 @@ import Profile from './pages/Profile';
 import PaymentCancel from './pages/PaymentCancel';
 import PaymentSuccess from './pages/PaymentSuccess';
 import ProductDetailPage from './pages/ProductDetailPage';
+import AboutUs from './pages/AboutUs';
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
 
                     <Route path="/products" element={<Products />} />
                     <Route path="/products/:productId" element={<ProductDetailPage />} />
+                    <Route path="/about-us" element={<AboutUs />} />
 
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />

@@ -39,7 +39,7 @@ const Register = () => {
             <div className="max-w-md w-full glass p-8 rounded-3xl shadow-xl border border-white/40">
                 <div className="text-center mb-10">
                     <h2 className="text-3xl font-black text-gray-900">Create Account</h2>
-                    <p className="text-gray-500 mt-2 text-sm">Join the curated fashion community</p>
+                    <p className="text-gray-500 mt-2 text-sm">Join our platform and start your shopping journey</p>
                     {error && <p className="text-red-500 mt-2">{error}</p>}
                 </div>
 

@@ -5,6 +5,7 @@ import { Filter, ChevronDown, Search } from 'lucide-react';
 import { ProductsContext } from '../context/ProductsContext';
 import ProductFilters from './ProductFilters';
 import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const Products = () => {
 
@@ -13,7 +14,33 @@ const Products = () => {
     const [sortOptions, setSortOptions] = useState(false);
     const totalPages = useMemo(() => Math.ceil(total / filters.limit) || 1, [total, filters.limit]);
 
+    const [searchParams] = useSearchParams();
+
+    const SORT_OPTIONS = [
+        { value: "price_asc", label: "Lower Price" },
+        { value: "price_desc", label: "Higher Price" },
+        { value: "newest", label: "Newest" },
+        { value: "rating_desc", label: "Best Rating" },
+        { value: "rating_asc", label: "Lower Rating" },
+    ];
+
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        setFilters(prev => ({
+            ...prev,
+            search: searchParams.get('search') || '',
+            minPrice: searchParams.get('minPrice') || '',
+            maxPrice: searchParams.get('maxPrice') || '',
+            category: searchParams.get('category') || '',
+            sort: searchParams.get('sort') || '',
+            page: Number(searchParams.get('page')) || 1,
+            limit: Number(searchParams.get('limit')) || 12,
+        }));
+    }, []);
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [filters.page, filters.category, filters.sort, filters.search]); useEffect(() => {
         if (filters.page > totalPages) {
             setFilters(prev => ({ ...prev, page: totalPages }));
         }
@@ -93,39 +120,24 @@ const Products = () => {
                             />
                         </button>
 
+
                         {sortOptions && (
                             <ul className="absolute left-0 mt-2 w-30 bg-white border border-gray-200 rounded-xl shadow-lg py-2 z-50">
-                                <li
-                                    onClick={() => {
-                                        setFilters(prev => ({ ...prev, sort: "price_asc", page: 1 }));
-                                        setSortOptions(false);
-                                    }}
-                                    className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
-                                >
-                                    Lower Price
-                                </li>
-
-                                <li
-                                    onClick={() => {
-                                        setFilters(prev => ({ ...prev, sort: "price_desc", page: 1 }));
-                                        setSortOptions(false);
-                                    }}
-                                    className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
-                                >
-                                    Higher Price
-                                </li>
-
-                                <li
-                                    onClick={() => {
-                                        setFilters(prev => ({ ...prev, sort: "newest", page: 1 }));
-                                        setSortOptions(false);
-                                    }}
-                                    className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
-                                >
-                                    Newest
-                                </li>
+                                {SORT_OPTIONS.map(({ value, label }) => (
+                                    <li
+                                        key={value}
+                                        onClick={() => {
+                                            setFilters(prev => ({ ...prev, sort: value, page: 1 }));
+                                            setSortOptions(false);
+                                        }}
+                                        className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                                    >
+                                        {label}
+                                    </li>
+                                ))}
                             </ul>
                         )}
+
                     </div>
 
                 </div>

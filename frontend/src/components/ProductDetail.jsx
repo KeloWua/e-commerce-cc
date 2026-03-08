@@ -8,6 +8,7 @@ import { createReview } from "../services/reviews";
 import { ProductsContext } from "../context/ProductsContext";
 import RelatedProductsCarousel from "./RelatedProductCarousel";
 import { useRef } from "react";
+import { Link } from "lucide-react";
 
 const ProductDetail = ({ product, reviews: initialReviews }) => {
   const { user } = useContext(AuthContext);
@@ -91,7 +92,7 @@ const ProductDetail = ({ product, reviews: initialReviews }) => {
               disabled={!user}
               className="px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50 hover:bg-indigo-700 transition shadow"
             >
-              {!user ? "Login to review" : userReview ? "Edit your review" : "Write a review"}
+              {!user ? (<a href={'/login'}>Login to review</a>)  : userReview ? "Edit your review" : "Write a review"}
             </button>
           </div>
 

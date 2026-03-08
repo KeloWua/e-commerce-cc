@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const Footer = () => {
     return (
         <footer className="bg-gray-900 text-gray-300">
@@ -8,20 +10,21 @@ const Footer = () => {
                             Vad.er
                         </span>
                         <p className="mt-4 text-sm max-w-xs">
-                            Elevating your style with curated pieces that define modern elegance. Fast shipping, easy returns, and a collection that speaks for itself.
+                            Your one-stop destination for everything you need. From the latest electronics to home essentials, we've got you covered with premium service and fast delivery.
                         </p>
                     </div>
                     <div>
                         <h3 className="text-white font-bold mb-4">Shop</h3>
                         <ul className="space-y-2 text-sm">
-                            <li><a href="#" className="hover:text-indigo-400">All Products</a></li>
-                            <li><a href="#" className="hover:text-indigo-400">Featured</a></li>
-                            <li><a href="#" className="hover:text-indigo-400">New Arrivals</a></li>
+                            <li><Link to="/products" className="hover:text-indigo-400">All Products</Link></li>
+                            <li><Link to="/products?sort=rating_desc" className="hover:text-indigo-400">Featured</Link></li>
+                            <li><Link to="/products?sort=newest" className="hover:text-indigo-400">New Arrivals</Link></li>
                         </ul>
                     </div>
                     <div>
                         <h3 className="text-white font-bold mb-4">Support</h3>
                         <ul className="space-y-2 text-sm">
+                            <li><Link to="/about-us" className="hover:text-indigo-400">About Us</Link></li>
                             <li><a href="#" className="hover:text-indigo-400">FAQ</a></li>
                             <li><a href="#" className="hover:text-indigo-400">Shipping</a></li>
                             <li><a href="#" className="hover:text-indigo-400">Returns</a></li>
