@@ -1,8 +1,8 @@
 import { Package, ChevronRight, Clock } from 'lucide-react';
 import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { OrderContext } from '../context/OrderContext';
+import { OrderContext } from '../../context/OrderContext';
 
 const Orders = () => {
 
@@ -16,8 +16,8 @@ const Orders = () => {
             const userOrders = await getUserOrders();
             setOrders(userOrders)
         }
-        if(user)
-        loadOrders();
+        if (user)
+            loadOrders();
     }, [])
 
     const handleGetOrder = async (orderId) => {
@@ -28,11 +28,11 @@ const Orders = () => {
     }
     if (!orders) {
         return (
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                    <div className="flex items-center justify-between mb-12">
-                        <h1 className="text-4xl font-black text-gray-900">No orders</h1>
-                    </div>
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div className="flex items-center justify-between mb-12">
+                    <h1 className="text-4xl font-black text-gray-900">No orders</h1>
                 </div>
+            </div>
         )
     }
     return (
@@ -74,7 +74,7 @@ const Orders = () => {
                             <button
                                 onClick={() => order.status === 'pending' ? navigate('/cart') : handleGetOrder(order.id)}
                                 className="p-3 bg-gray-50 rounded-full text-gray-400 group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                                <ChevronRight className="h-5 w-5"/>
+                                <ChevronRight className="h-5 w-5" />
                             </button>
                         </div>
                     </div>

@@ -1,5 +1,7 @@
 import { Mail, Phone, MapPin, Send, Users, Target, Rocket } from 'lucide-react';
 import { useState } from 'react';
+import { sendContactForm } from '../../services/contact.service';
+
 
 const AboutUs = () => {
     const [formData, setFormData] = useState({
@@ -9,12 +11,19 @@ const AboutUs = () => {
         message: ''
     });
 
-    const handleSubmit = (e) => {
+    const [status, setStatus] = useState(null);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log('Form submitted:', formData);
-        alert('Thank you for your message! We will get back to you soon.');
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setStatus('loading');
+        try {
+            await sendContactForm(formData); // <-- formData, no form
+            setStatus('success');
+            setFormData({ name: '', email: '', subject: '', message: '' });
+        } catch (error) {
+            console.error(error);
+            setStatus('error');
+        }
     };
 
     const handleChange = (e) => {
@@ -173,11 +182,23 @@ const AboutUs = () => {
 
                                 <button
                                     type="submit"
+                                    disabled={status === 'loading'}
                                     className="w-full py-4 bg-gray-900 text-white font-black rounded-xl hover:bg-indigo-600 shadow-lg shadow-indigo-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
                                 >
                                     <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                                    Send Message
+                                    {status === 'loading' ? 'Sending...' : 'Send Message'}
                                 </button>
+
+                                {status === 'success' && (
+                                    <p className="text-green-600 text-sm text-center font-medium">
+                                        ✓ Message sent! We'll get back to you soon.
+                                    </p>
+                                )}
+                                {status === 'error' && (
+                                    <p className="text-red-500 text-sm text-center font-medium">
+                                        Something went wrong. Please try again.
+                                    </p>
+                                )}
                             </form>
                         </div>
                     </div>

@@ -1,37 +1,65 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import testRoutes from './routes/test.routes.js';
+import cookieParser from 'cookie-parser';
+import passport from "./config/passport.js";
+
+// Routes imports
+import authRoutes from './routes/auth.routes.js';
 import productsRoutes from './routes/products.routes.js';
 import ordersRoutes from './routes/orders.routes.js';
-import authRoutes from './routes/auth.routes.js';
 import paymentsRoutes from './routes/payments.routes.js';
-import errorHandler from './middleware/error.middleware.js'
-import passport from "./config/passport.js";
-import cookieParser from 'cookie-parser';
+import contactRoutes from './routes/contact.routes.js';
+import testRoutes from './routes/test.routes.js';
+
+// Middleware imports
+import errorHandler from './middleware/error.middleware.js';
 
 const app = express();
-app.use(cookieParser());
+
+/**
+ * Global Middlewares
+ */
+
+// Enable CORS with credentials for local dev
 app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true,
 }));
+
+app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(passport.initialize());
+
+/**
+ * Payment routes 
+ * NOTE: Stripe webhooks require the RAW body, so we mount this 
+ * route BEFORE the global express.json() parser.
+ */
 app.use("/payments", paymentsRoutes);
+
+// Global JSON processing for other routes
 app.use(express.json());
 
+/**
+ * API Route Mounting
+ */
+app.use("/auth", authRoutes);
+app.use("/products", productsRoutes);
+app.use("/orders", ordersRoutes);
+app.use('/contact', contactRoutes);
 app.use("/test", testRoutes);
 
-app.use("/products", productsRoutes);
-app.use("/auth", authRoutes);
-app.use("/orders", ordersRoutes);
-
-app.use(errorHandler)
-
-// Testing normal
+/**
+ * Health Check & Base Route
+ */
 app.get("/", (req, res) => {
-    res.send("API is running")
+    res.json({ ok: true, message: "Vad.er API is running smoothly 🚀" });
 });
+
+/**
+ * Error Handling (Always last)
+ */
+app.use(errorHandler);
 
 export default app;

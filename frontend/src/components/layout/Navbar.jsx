@@ -1,8 +1,8 @@
 import { ShoppingCart, User, LogOut, Menu, Search, X } from 'lucide-react';
 import { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
-import { OrderContext } from '../context/OrderContext';
+import { AuthContext } from '../../context/AuthContext';
+import { OrderContext } from '../../context/OrderContext';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);

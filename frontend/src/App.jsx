@@ -1,17 +1,18 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
-import Home from './pages/Home';
-import Products from './pages/Products';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Cart from './pages/Cart';
-import Orders from './pages/Orders';
-import OrderDetail from './pages/OrderDetail';
-import Profile from './pages/Profile';
-import PaymentCancel from './pages/PaymentCancel';
-import PaymentSuccess from './pages/PaymentSuccess';
-import ProductDetailPage from './pages/ProductDetailPage';
-import AboutUs from './pages/AboutUs';
+import Layout from './components/layout/Layout';
+import Home from './pages/info/Home';
+import Products from './pages/products/Products';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import Cart from './pages/orders/Cart';
+import Orders from './pages/orders/Orders';
+import OrderDetail from './pages/orders/OrderDetail';
+import Profile from './pages/user/Profile';
+import PaymentCancel from './pages/orders/PaymentCancel';
+import PaymentSuccess from './pages/orders/PaymentSuccess';
+import ProductDetailPage from './pages/products/ProductDetailPage';
+import AboutUs from './pages/info/AboutUs';
+import ResetPassword from './pages/auth/ResetPassword';
 
 function App() {
     return (
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/logout" element={<Login />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
 
                     <Route path="/cart" element={<Cart />} />
 

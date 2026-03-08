@@ -6,6 +6,8 @@ CREATE TABLE users (
     password TEXT,
     google_id TEXT UNIQUE,
     role VARCHAR(20) DEFAULT 'user',
+    reset_password_token VARCHAR(255),
+    reset_password_expires TIMESTAMPTZ,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -1,8 +1,8 @@
 import { useContext, useState, useMemo } from 'react';
-import ProductCard from '../components/ProductCard';
-import Pagination from '../components/Pagination';
+import ProductCard from '../../components/products/ProductCard';
+import Pagination from '../../components/ui/Pagination';
 import { Filter, ChevronDown, Search } from 'lucide-react';
-import { ProductsContext } from '../context/ProductsContext';
+import { ProductsContext } from '../../context/ProductsContext';
 import ProductFilters from './ProductFilters';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';

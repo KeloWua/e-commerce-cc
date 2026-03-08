@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { OrderContext } from "../context/OrderContext";
+import { OrderContext } from "../../context/OrderContext";
 
 const PaymentSucess = () => {
     const { orderId } = useParams();
@@ -21,7 +21,7 @@ const PaymentSucess = () => {
     return (
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="flex items-center mb-12">
-                <h1 className="text-4xl font-black text-gray-900">Your order #-{orderId?? ''} has been placed succesfully
+                <h1 className="text-4xl font-black text-gray-900">Your order #-{orderId ?? ''} has been placed succesfully
                 </h1>
             </div>
         </div>

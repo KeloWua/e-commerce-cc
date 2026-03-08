@@ -1,12 +1,12 @@
 import { ArrowRight, Star, Truck, ShieldCheck, RefreshCw } from 'lucide-react';
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ProductsContext } from '../context/ProductsContext';
+import { ProductsContext } from '../../context/ProductsContext';
 
 
 const Home = () => {
 
-            {/* Categories Provider */}
+    {/* Categories Provider */ }
     const { categories } = useContext(ProductsContext);
     const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const Home = () => {
             }))
         : FALLBACK_CATEGORIES;
 
-            {/* Home Icons */}
+    {/* Home Icons */ }
     const HOME_ICONS = [
         {
             icon: Truck, title: 'Free Shipping', desc: 'On orders over $50',
@@ -57,9 +57,9 @@ const Home = () => {
                                 Start Shopping
                                 <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
                             </Link>
-                            <button className="px-8 py-4 border-2 border-gray-200 text-gray-900 font-bold rounded-full hover:bg-gray-50 transition-all">
-                                Learn More
-                            </button>
+                            <Link to="/about-us" className="px-8 py-4 border-2 border-gray-200 text-gray-900 font-bold rounded-full hover:bg-gray-50 transition-all">
+                                Contact Us
+                            </Link>
                         </div>
                     </div>
                 </div>
