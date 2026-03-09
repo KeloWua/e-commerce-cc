@@ -57,28 +57,28 @@ const ProductDetail = ({ product, reviews: initialReviews }) => {
     }, [product.id, initialReviews]);
 
     return (
-        <div className="min-h-screen bg-gray-50/30">
+        <div className="min-h-screen bg-gray-50/30 dark:bg-gray-950 transition-colors duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
                 {/* Breadcrumbs */}
-                <nav className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-8">
-                    <Link to="/" className="hover:text-indigo-600 transition-colors">Home</Link>
+                <nav className="flex items-center gap-2 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-8">
+                    <Link to="/" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</Link>
                     <ChevronRight size={12} />
-                    <Link to="/products" className="hover:text-indigo-600 transition-colors">Shop</Link>
+                    <Link to="/products" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Shop</Link>
                     <ChevronRight size={12} />
-                    <span className="text-gray-900">{product.name}</span>
+                    <span className="text-gray-900 dark:text-gray-100">{product.name}</span>
                 </nav>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
                     {/* Product Image */}
                     <div className="relative group">
-                        <div className="absolute -inset-4 bg-indigo-500/5 rounded-[2rem] blur-2xl group-hover:bg-indigo-500/10 transition-all duration-500"></div>
-                        <div className="relative bg-white p-4 rounded-[2rem] shadow-2xl border border-white/40 overflow-hidden">
+                        <div className="absolute -inset-4 bg-indigo-500/5 dark:bg-indigo-500/10 rounded-[2rem] blur-2xl group-hover:bg-indigo-500/10 dark:group-hover:bg-indigo-500/20 transition-all duration-500"></div>
+                        <div className="relative bg-white dark:bg-gray-900 p-4 rounded-[2rem] shadow-2xl border border-white/40 dark:border-gray-800 overflow-hidden">
                             <img
                                 src={product.image_url || "https://picsum.photos/seed/default/800/800"}
                                 alt={product.name}
-                                className="w-full aspect-square object-cover rounded-2xl transform hover:scale-105 transition-transform duration-700"
+                                className="w-full aspect-square object-cover rounded-2xl transform hover:scale-105 transition-transform duration-700 dark-force"
                             />
                         </div>
                     </div>
@@ -86,10 +86,10 @@ const ProductDetail = ({ product, reviews: initialReviews }) => {
                     {/* Product Info */}
                     <div className="flex flex-col">
                         <div className="mb-6">
-                            <span className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-full mb-3">
+                            <span className="inline-block px-3 py-1 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-widest rounded-full mb-3">
                                 {product.category_name || "Premium Collection"}
                             </span>
-                            <h1 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-4">
+                            <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight mb-4">
                                 {product.name}
                             </h1>
                             <div className="flex items-center gap-4">
@@ -97,12 +97,12 @@ const ProductDetail = ({ product, reviews: initialReviews }) => {
                             </div>
                         </div>
 
-                        <p className="text-gray-500 text-lg leading-relaxed mb-8 font-medium">
+                        <p className="text-gray-500 dark:text-gray-400 text-lg leading-relaxed mb-8 font-medium">
                             {product.description}
                         </p>
 
                         <div className="flex items-baseline gap-4 mb-8">
-                            <span className="text-4xl font-black text-gray-900">${product.price}</span>
+                            <span className="text-4xl font-black text-gray-900 dark:text-white">${product.price}</span>
                             {product.stock > 0 ? (
                                 <span className="text-sm font-bold text-green-500 flex items-center gap-1">
                                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
@@ -114,19 +114,19 @@ const ProductDetail = ({ product, reviews: initialReviews }) => {
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-                            <div className="flex items-center gap-3 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm">
-                                <div className="flex bg-gray-50 rounded-xl">
+                            <div className="flex items-center gap-3 bg-white dark:bg-gray-900 p-3 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
+                                <div className="flex bg-gray-50 dark:bg-gray-800 rounded-xl">
                                     <button
                                         onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                                        className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-indigo-600 font-bold"
+                                        className="w-10 h-10 flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 font-bold"
                                     >-</button>
-                                    <span className="w-10 flex items-center justify-center font-black text-gray-900">{quantity}</span>
+                                    <span className="w-10 flex items-center justify-center font-black text-gray-900 dark:text-gray-100">{quantity}</span>
                                     <button
                                         onClick={() => setQuantity(q => Math.min(product.stock, q + 1))}
-                                        className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-indigo-600 font-bold"
+                                        className="w-10 h-10 flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 font-bold"
                                     >+</button>
                                 </div>
-                                <div className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Quantity</div>
+                                <div className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-tighter">Quantity</div>
                             </div>
 
                             <button

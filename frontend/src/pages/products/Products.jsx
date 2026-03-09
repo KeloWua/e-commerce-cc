@@ -64,16 +64,16 @@ const Products = () => {
         }
     }, [totalPages]);
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 dark:bg-gray-950 transition-colors duration-300">
 
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                 <div>
-                    <h1 className="text-4xl font-black text-gray-900">Explore Collection</h1>
-                    <p className="text-gray-500 mt-2">
+                    <h1 className="text-4xl font-black text-gray-900 dark:text-white">Explore Collection</h1>
+                    <p className="text-gray-500 dark:text-gray-400 mt-2">
                         {products?.length ? (
                             <>
                                 Showing {products.length} item{products.length > 1 ? 's' : ''} in{' '}
-                                <span className="font-bold">
+                                <span className="font-bold text-gray-900 dark:text-white">
                                     {categories?.[filters?.category - 1]?.name || 'all items'}
                                 </span>{' '}
                                 category
@@ -96,7 +96,7 @@ const Products = () => {
                                         page: 1
                                     }))
                                 }
-                                className="pl-10 pr-4 py-2 bg-gray-100 border-none rounded-full text-sm focus:ring-2 focus:ring-indigo-500 w-48 transition-all group-focus-within:w-64"
+                                className="pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 border-none rounded-full text-sm focus:ring-2 focus:ring-indigo-500 w-48 transition-all group-focus-within:w-64 dark:text-white dark:placeholder-gray-500"
                             />
                             <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                         </div>
@@ -120,7 +120,7 @@ const Products = () => {
                     {/* Filter */}
                     <button
                         onClick={handleToggleFilters}
-                        className="flex items-center space-x-2 px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-500">
+                        className="flex items-center space-x-2 px-5 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-indigo-500/20 rounded-xl text-sm font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-sm transition-all focus:ring-2 focus:ring-indigo-500">
                         <Filter className="h-4 w-4" />
                         <span>Filter</span>
                     </button>
@@ -129,7 +129,7 @@ const Products = () => {
                     <div className="relative">
                         <button
                             onClick={() => { setSortOptions(prev => !prev); setFilterOptions(false) }}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 shadow-sm transition-all focus:ring-2 focus:ring-indigo-500"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-indigo-500/20 rounded-xl text-sm font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 shadow-sm transition-all focus:ring-2 focus:ring-indigo-500"
                         >
                             <span>Sort By</span>
                             <ChevronDown
@@ -140,7 +140,7 @@ const Products = () => {
 
 
                         {sortOptions && (
-                            <ul className="absolute left-0 mt-2 w-30 bg-white border border-gray-200 rounded-xl shadow-lg py-2 z-50">
+                            <ul className="absolute left-0 mt-2 w-32 bg-white dark:bg-gray-900 border border-gray-200 dark:border-indigo-500/20 rounded-xl shadow-lg py-2 z-50 transition-all">
                                 {SORT_OPTIONS.map(({ value, label }) => (
                                     <li
                                         key={value}
@@ -148,7 +148,7 @@ const Products = () => {
                                             setFilters(prev => ({ ...prev, sort: value, page: 1 }));
                                             setSortOptions(false);
                                         }}
-                                        className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                                        className="px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300 cursor-pointer transition-colors"
                                     >
                                         {label}
                                     </li>

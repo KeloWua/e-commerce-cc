@@ -20,5 +20,13 @@ body {
 }
 
 .glass {
-  @apply backdrop-blur-md bg-white/70 border border-white/20;
+  @apply backdrop-blur-md bg-white/70 dark:bg-gray-900/70 border border-white/20 dark:border-gray-800/50;
 }
+
+/* Force dark mode behavior for product images (especially transparent ones) */
+.dark img.dark-force {
+  filter: brightness(0.9) contrast(1.1);
+  background-color: rgba(255, 255, 255, 0.05); /* Very subtle background for transparent items */
+  border-radius: 0.5rem;
+}
+

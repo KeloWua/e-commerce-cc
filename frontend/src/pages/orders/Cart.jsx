@@ -1,6 +1,7 @@
-import { Trash2, Plus, Minus, CreditCard } from 'lucide-react';
+import { CreditCard } from 'lucide-react';
 import { useContext } from 'react';
 import { OrderContext } from '../../context/OrderContext';
+import OrderItemCard from '../../components/orders/OrderItemCard';
 
 const Cart = () => {
 
@@ -10,8 +11,8 @@ const Cart = () => {
 
     if (!order || order.items.length === 0) {
         return (
-            <div className="text-center py-20">
-                <h2 className="text-2xl font-bold">Your cart is empty</h2>
+            <div className="text-center py-20 dark:bg-gray-950 transition-colors duration-300 min-h-screen">
+                <h2 className="text-2xl font-bold dark:text-gray-200">Your cart is empty</h2>
             </div>
         );
     }
@@ -42,9 +43,9 @@ const Cart = () => {
         }
     };
     return (
-        <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="max-w-7xl mx-auto px-4 py-16 dark:bg-gray-950 transition-colors duration-300 min-h-screen">
 
-            <h1 className="text-4xl font-black mb-12">
+            <h1 className="text-4xl font-black mb-12 dark:text-indigo-200">
                 Your Shopping Cart
             </h1>
 
@@ -54,95 +55,39 @@ const Cart = () => {
                 <div className="flex-grow space-y-6">
 
                     {order.items.map((item) => (
-
-                        <div
+                        <OrderItemCard
                             key={item.id}
-                            className="flex items-center gap-6 p-6 bg-white rounded-3xl border shadow-sm"
-                        >
-
-                            <img
-                                src={item.image_url}
-                                alt={item.name}
-                                className="w-24 h-24 rounded-xl"
-                            />
-
-                            <div className="flex-grow">
-
-                                <div className="flex justify-between mb-2">
-                                    <h3 className="font-bold">{item.name}</h3>
-
-                                    <button
-                                        onClick={() => handleDelete(item.product_id)}
-                                        className="text-gray-400 hover:text-red-500"
-                                    >
-                                        <Trash2 className="h-4 w-4" />
-                                    </button>
-                                </div>
-
-                                <p className="text-sm font-bold">
-                                    ${item.price.toFixed(2)} |
-                                    <span className="text-gray-500 ml-2">
-                                        Subtotal: ${(item.price * item.quantity).toFixed(2)}
-                                    </span>
-                                </p>
-
-                                <div className="mt-4 flex items-center gap-4">
-
-                                    <div className="flex items-center border rounded-lg overflow-hidden">
-
-                                        <button
-                                            onClick={() => handleUpdateQty(item.product_id, item.quantity - 1)}
-                                            className="px-3"
-                                        >
-                                            <Minus className="h-3 w-3" />
-                                        </button>
-
-                                        <span className="px-4 text-xs font-bold">
-                                            {item.quantity}
-                                        </span>
-
-                                        <button
-                                            onClick={() => handleUpdateQty(item.product_id, item.quantity + 1)}
-                                            className="px-3 border-l"
-                                        >
-                                            <Plus className="h-3 w-3" />
-                                        </button>
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
+                            item={item}
+                            isCart={true}
+                            onUpdateQty={handleUpdateQty}
+                            onDelete={handleDelete}
+                        />
                     ))}
 
                 </div>
 
                 {/* SUMMARY */}
                 <div className="lg:w-96">
-                    <div className="bg-gray-900 text-white p-10 rounded-[40px] sticky top-24">
+                    <div className="bg-gray-900 border border-gray-100 dark:border-indigo-500/10 text-white p-10 rounded-[40px] sticky top-24 shadow-xl dark:shadow-indigo-500/5">
 
-                        <h2 className="text-2xl font-black mb-8">
+                        <h2 className="text-2xl font-black mb-8 dark:text-white">
                             Order Summary
                         </h2>
 
                         <div className="flex justify-between text-xl font-black">
                             <span>Total</span>
-                            <span className="text-pink-400">
+                            <span className="text-pink-400 dark:text-pink-400">
                                 ${total}
                             </span>
                         </div>
 
                         <button
-
                             onClick={handleCheckOut}
-                            className="w-full py-5 mt-8 bg-black text-gray-100 font-bold rounded-2xl flex justify-center"
+                            className="w-full py-5 mt-8 bg-white dark:bg-indigo-600 text-gray-900 dark:text-white font-bold rounded-2xl flex justify-center hover:bg-gray-100 dark:hover:bg-indigo-500 transition-colors"
                         >
                             Proceed to Checkout
                             <CreditCard className="ml-3 h-5 w-5" />
                         </button>
-
-
-
                     </div>
                 </div>
 
